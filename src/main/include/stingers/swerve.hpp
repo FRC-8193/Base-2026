@@ -70,26 +70,49 @@ struct Configuration {
 
 const Configuration swerve_config;
 
+/**
+* An abstract motor driving a wheel.
+*/
 class DriveMotor {
 public:
+	/**
+	* Set the setpoint for the ground speed of the module.
+	*/
 	virtual void set_ground_speed_setpoint(units::velocity::meters_per_second_t) = 0;
 
 	virtual ~DriveMotor() = 0;
 };
 
+/**
+* An abstract motor turning a wheel.
+*/
 class TurnMotor {
 public:
+	/**
+	* Set the setpoint for the angle of the wheel relative to frame forward.
+	*/
 	virtual void set_angle_setpoint_modspace(units::angle::radian_t) = 0;
 
 	virtual ~TurnMotor() = 0;
 };
 
+/**
+* A single module, consisting of a turnand drive motor and a frame-relative position.
+*/
 class Module {
 public:
+	/**
+	* Set the setpoint for the ground speed and angle of the module relative to frame forward.
+	*/
 	inline void set_velocity_setpoint_modspace_radial(units::angle::radian_t angle, units::velocity::meters_per_second_t speed) {
 		this->turn_motor->set_angle_setpoint_modspace(angle);
 		this->drive_motor->set_ground_speed_setpoint(speed);
 	}
+	
+	/**
+	* Set the setpoint for the ground speed of the module as x and y components relative to frame forward.
+	* (+y = forward +x = right)
+	*/
 	inline void set_velocity_setpoint_modspace_cartesian(units::velocity::meters_per_second_t x, units::velocity::meters_per_second_t y) {
 		units::angle::radian_t theta = units::angle::radian_t(std::atan2(y.value(), x.value()));
 		units::velocity::meters_per_second_t magnitude = units::velocity::meters_per_second_t(std::sqrt(x.value()*x.value() + y.value()*y.value()));
@@ -100,15 +123,26 @@ private:
 	std::unique_ptr<DriveMotor> drive_motor;
 	std::unique_ptr<TurnMotor> turn_motor;
 
+	// let the drive controller access the position of the module
 	friend class SwerveDrive;
 	units::meter_t cframe_to_cmodule_x;
 	units::meter_t cframe_to_cmodule_y;
 };
 
+/**
+* A full drive, a collection of modules.
+*/
 class SwerveDrive {
 public:
+	/**
+	* Create a new swerve drive with the specified modules.
+	*/
 	SwerveDrive(std::vector<Module> modules);
 
+	/**
+	* Set the setpoint for the linear and angular speed of the frame as x and y components and an angular velocity.
+	* (+y = frame forward +x = frame right +theta = clockwise)
+	*/
 	void set_velocity_setpoint_framespace(units::velocity::meters_per_second_t x, units::velocity::meters_per_second_t y, units::angular_velocity::radians_per_second_t t);
 private:
 	std::vector<Module> modules;

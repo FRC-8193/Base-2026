@@ -17,8 +17,10 @@ cd Base-2026
 You can also download the repository from the [Github page](https://github.com/FRC-8193/Base-2026) as a ZIP file, or with the GitHub app.
 
 ### 2. Change configurations
-TODO
-[link text](https://github.com/user/repo/blob/branch/path/to/file.ext)
+Before running, you'll likely have to reconfigure settings for your robot.  
+All the settings are found in [config.cpp](src/main/cpp/stingers/config.cpp).  
+There are also comments in this file explaining what the settings mean.
+
 ### 3. Build & deploy
 <details>
 <summary><strong>With VS Code</strong></summary>  

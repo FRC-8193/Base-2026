@@ -20,17 +20,19 @@
 
 #include <stingers/swerve.hpp>
 
+// Base swerve configuration, excluding navigational stuff
 const stingers::swerve::Configuration swerve_config = {
+	// All the modules' settings are here
 	.modules = {
 		// Front left
 		stingers::swerve::Configuration::Module {
 			.turn_type = TALON_FX,
-			.turn_id = 0,
+			.turn_id = 0,  // motor type and CAN id
 			.drive_type = TALON_FX,
 			.drive_id = 1,
 
-			.frame_offset_x = -0.5_m,
-			.frame_offset_y =  0.5_m
+			.frame_offset_x = -0.5_m, // the _m prefix is provided by the units library and means 'meters'.
+			.frame_offset_y =  0.5_m  // you can use other units like _in for inches or _cm for centimeters
 		},
 	}
 };

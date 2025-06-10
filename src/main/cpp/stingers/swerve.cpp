@@ -25,21 +25,32 @@ namespace stingers {
 namespace swerve {
 
 void SwerveDrive::set_velocity_setpoint_framespace(units::velocity::meters_per_second_t x, units::velocity::meters_per_second_t y, units::angular_velocity::radians_per_second_t t) {
+	// we want numbers we can actually use
 	double dx = x.value();
 	double dy = y.value();
 
 	double dt = t.value();
 
+	// each module demands some CPU power
 	for (auto& mod : this->modules) {
+		// module position
 		double mx = mod.cframe_to_cmodule_x.value();
 		double my = mod.cframe_to_cmodule_y.value();
-
+		
+		// module delta position (drive component)
 		double mddx = dx;
 		double mddy = dy;
-		
-		double mtdx = -my * dt;
-		double mtdy =  mx * dt;
-	
+
+		// module delta position (turn component)
+		// this may seem a bit confusing but it actually makes sense. when rotating we want the module to
+		// move in a direction tangent to a circle centered at the frame origin passing through the module.
+		// finding this direction is equivalent to rotating the vector pointing from the frame to the module by 90 degrees.
+		// we use the clockwise rotation formula, as the turn speed is clockwise-positive.
+		// then we scale it by the turn speed so that we can turn less or in the other direction.
+		double mtdx =  my * dt;
+		double mtdy = -mx * dt;
+
+		// module delta position overall is just the sum of the components
 		double mdx = mddx + mtdx;
 		double mdy = mddy + mtdy;
 
