@@ -8,8 +8,47 @@
 #include <units/velocity.h>
 #include <units/angular_velocity.h>
 
+enum MotorType {
+	TALON_FX
+};
+
 namespace stingers {
 namespace swerve {
+
+struct Configuration {
+	struct Module {
+		/**
+		* The type of the motor controller turning this wheel.
+		*/
+		MotorType turn_type;
+		/**
+		* The CAN id of the motor controller turning this wheel.
+		*/
+		int turn_id;
+
+		/**
+		* The type of the motor controller driving this wheel.
+		*/
+		MotorType drive_type;
+		/**
+		* The CAN id of the motor controller driving this wheel.
+		*/
+		int drive_id;
+
+		/**
+		* The distance in meters from the center of the frame to the center of the module, over the X (right) dimension.
+		*/
+		units::meter_t frame_offset_x;
+		/**
+		* The distance in meters from the center of the frame to the center of the modules, over the Y (forward) dimension.
+		*/
+		units::meter_t frame_offset_y;
+	};
+
+	std::vector<Module> modules;
+};
+
+const Configuration swerve_config;
 
 class DriveMotor {
 public:
