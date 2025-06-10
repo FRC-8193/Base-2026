@@ -6,7 +6,7 @@ This is the chassis codebase for our FRC 2026 season bot.
 
 > [!WARNING]
 > This codebase is designed specifically for *our* robot, with its unique dimensions, CAN IDs, and setup.  
-> To use it with your robot, you'll likely have to change configuration values in [INSERT CONFIG].
+> To use it with your robot, you'll likely have to change configuration values in [config.cpp](src/main/cpp/stingers/config.cpp).
 
 ### 1. Clone the repository
 In your terminal, run:
@@ -19,7 +19,6 @@ You can also download the repository from the [Github page](https://github.com/F
 ### 2. Change configurations
 TODO
 [link text](https://github.com/user/repo/blob/branch/path/to/file.ext)
-
 ### 3. Build & deploy
 <details>
 <summary><strong>With VS Code</strong></summary>  
