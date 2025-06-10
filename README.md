@@ -16,7 +16,7 @@ cd Base-2026
 ```
 You can also download the repository from the [Github page](https://github.com/FRC-8193/Base-2026) as a ZIP file, or with the GitHub app.
 
-### 2. Change conigurations
+### 2. Change configurations
 TODO
 [link text](https://github.com/user/repo/blob/branch/path/to/file.ext)
 
@@ -37,4 +37,4 @@ Or, on Windows:
 ```
 .\gradlew.bat deploy
 ```
-<details>
+</details>
