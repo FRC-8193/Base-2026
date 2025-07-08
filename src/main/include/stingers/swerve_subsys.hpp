@@ -4,8 +4,7 @@
 #include <stingers/swerve.hpp>
 #include <frc2/command/SubsystemBase.h>
 
-namespace stingers {
-namespace swerve {
+namespace stingers::swerve {
 
 class SwerveSubsystem : public frc2::SubsystemBase {
 public:
@@ -30,6 +29,6 @@ public:
 
 	void InitSendable(wpi::SendableBuilder& builder) override;
 private:
+	SwerveDrive drive;
 };
-}
 }

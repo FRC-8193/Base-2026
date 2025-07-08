@@ -32,8 +32,7 @@ enum MotorType {
 	TALON_FX
 };
 
-namespace stingers {
-namespace swerve {
+namespace stingers::swerve {
 
 struct Configuration {
 	struct Module {
@@ -68,7 +67,7 @@ struct Configuration {
 	std::vector<Module> modules;
 };
 
-const Configuration swerve_config;
+const extern Configuration swerve_config;
 
 /**
 * An abstract motor driving a wheel.
@@ -97,7 +96,7 @@ public:
 };
 
 /**
-* A single module, consisting of a turnand drive motor and a frame-relative position.
+* A single module, consisting of a turn and drive motor and a frame-relative position.
 */
 class Module {
 public:
@@ -137,7 +136,12 @@ public:
 	/**
 	* Create a new swerve drive with the specified modules.
 	*/
-	SwerveDrive(std::vector<Module> modules);
+	SwerveDrive(std::vector<Module> modules) : modules(std::move(modules)) {}
+
+	/**
+	 * Create a new swerve drive from the given configuration.
+	 */
+	SwerveDrive(const Configuration& config);
 
 	/**
 	* Set the setpoint for the linear and angular speed of the frame as x and y components and an angular velocity.
@@ -148,5 +152,4 @@ private:
 	std::vector<Module> modules;
 };
 
-}
 }

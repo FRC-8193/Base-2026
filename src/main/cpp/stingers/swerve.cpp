@@ -20,9 +20,40 @@
 
 #include "units/velocity.h"
 #include <stingers/swerve.hpp>
+#include <stingers/swerve_motors.hpp>
+#include <iostream>
 
-namespace stingers {
-namespace swerve {
+namespace stingers::swerve {
+
+SwerveDrive::SwerveDrive(const Configuration& config) {
+	std::vector<Module> modules;
+
+	for (const auto& mod_conf : config.modules) {
+		Module module;
+		module.cframe_to_cmodule_x = mod_conf.frame_offset_x;
+		module.cframe_to_cmodule_y = mod_conf.frame_offset_y;
+
+		switch (mod_conf.drive_type) {
+			case TALON_FX:
+				module.drive_motor = std::make_unique<motors::TalonFxDriveMotor>(mod_conf.drive_id);
+			break;
+			default:
+				std::cerr << "ERROR: Unknown drive motor type!" << std::endl;
+				std::exit(-1);
+			break;
+		}
+
+		switch (mod_conf.turn_type) {
+			case TALON_FX:
+				module.turn_motor = std::make_unique<motors::TalonFxTurnMotor>(mod_conf.turn_id);
+			break;
+			default:
+				std::cerr << "ERROR: Unknown turn motor type!" << std::endl;
+				std::exit(-1);
+			break;
+		}
+	}
+}
 
 void SwerveDrive::set_velocity_setpoint_framespace(units::velocity::meters_per_second_t x, units::velocity::meters_per_second_t y, units::angular_velocity::radians_per_second_t t) {
 	// we want numbers we can actually use
@@ -58,5 +89,4 @@ void SwerveDrive::set_velocity_setpoint_framespace(units::velocity::meters_per_s
 	}
 }
 
-}
 }
