@@ -2,21 +2,20 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-#include <frc2/command/Commands.h>
 #include <RobotContainer.h>
+#include <frc2/command/Commands.h>
 
 RobotContainer::RobotContainer() {
-	ConfigureBindings();
+  ConfigureBindings();
 
-	this->swerve.SetDefaultCommand(this->swerve.drive_command(
-		[this] { return units::meters_per_second_t(this->driver.GetX()); },
-		[this] { return units::meters_per_second_t(this->driver.GetY()); },
-		[this] { return units::radians_per_second_t(this->driver.GetTwist()); }
-	));
+  this->swerve.SetDefaultCommand(this->swerve.drive_command(
+      [this] { return units::meters_per_second_t(this->driver.GetX()); },
+      [this] { return units::meters_per_second_t(this->driver.GetY()); },
+      [this] { return units::radians_per_second_t(this->driver.GetTwist()); }));
 }
 
 void RobotContainer::ConfigureBindings() {}
 
 frc2::CommandPtr RobotContainer::GetAutonomousCommand() {
-	return frc2::cmd::Print("No autonomous command configured");
+  return frc2::cmd::Print("No autonomous command configured");
 }
