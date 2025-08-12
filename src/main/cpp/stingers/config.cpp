@@ -20,6 +20,16 @@
 
 #include <stingers/swerve.hpp>
 
+static const float turn_ratio = 1.0 / 13.3714;
+static const float turn_kp = 24.0 ;
+static const float turn_ki =  4.0 ;
+static const float turn_kd =  0.25;
+
+static const float drive_ratio = 1.0 / 5.01;
+static const float drive_kp = 0.1;
+static const float drive_ki = 0.0;
+static const float drive_kd = 0.0;
+
 // Base swerve configuration, excluding navigational stuff
 const stingers::swerve::Configuration stingers::swerve::swerve_config = {
     // All the modules' settings are here
@@ -28,17 +38,17 @@ const stingers::swerve::Configuration stingers::swerve::swerve_config = {
         stingers::swerve::Configuration::Module{
             .turn_type = TALON_FX,
             .turn_id = 2, // motor type and CAN id
-            .turn_ratio = 1.0 / 13.3714,
-            .turn_kp = 24.0,
-            .turn_ki = 4.0,
-            .turn_kd = 0.25,
+            .turn_ratio = turn_ratio,
+            .turn_kp = turn_kp,
+            .turn_ki = turn_ki,
+            .turn_kd = turn_kd,
 
             .drive_type = TALON_FX,
             .drive_id = 1,
-            .drive_ratio = 5.01,
-            .drive_kp = 0.1,
-            .drive_ki = 0.0,
-            .drive_kd = 0.0,
+            .drive_ratio = drive_ratio,
+            .drive_kp = drive_kp,
+            .drive_ki = drive_ki,
+            .drive_kd = drive_kd,
 
             .frame_offset_x = -28.575_cm,
             .frame_offset_y =  28.575_cm,
@@ -48,17 +58,18 @@ const stingers::swerve::Configuration stingers::swerve::swerve_config = {
         stingers::swerve::Configuration::Module{
             .turn_type = TALON_FX,
             .turn_id = 5, // motor type and CAN id
-            .turn_ratio = 1.0 / 13.3714,
-            .turn_kp = 24.0,
-            .turn_ki = 4.0,
-            .turn_kd = 0.25,
+            .turn_ratio = turn_ratio,
+            .turn_kp = turn_kp,
+            .turn_ki = turn_ki,
+            .turn_kd = turn_kd,
 
             .drive_type = TALON_FX,
             .drive_id = 4,
-            .drive_ratio = 5.01,
-            .drive_kp = 0.1,
-            .drive_ki = 0.0,
-            .drive_kd = 0.0,
+            .drive_ratio = drive_ratio,
+            .drive_kp = drive_kp,
+            .drive_ki = drive_ki,
+            .drive_kd = drive_kd,
+
 
             .frame_offset_x = 28.575_cm,
             .frame_offset_y =
@@ -68,17 +79,17 @@ const stingers::swerve::Configuration stingers::swerve::swerve_config = {
         stingers::swerve::Configuration::Module{
             .turn_type = TALON_FX,
             .turn_id = 8, // motor type and CAN id
-            .turn_ratio = 1.0 / 13.3714,
-            .turn_kp = 24.0,
-            .turn_ki = 4.0,
-            .turn_kd = 0.25,
+            .turn_ratio = turn_ratio,
+            .turn_kp = turn_kp,
+            .turn_ki = turn_ki,
+            .turn_kd = turn_kd,
 
             .drive_type = TALON_FX,
             .drive_id = 7,
-            .drive_ratio = 5.01,
-            .drive_kp = 0.1,
-            .drive_ki = 0.0,
-            .drive_kd = 0.0,
+            .drive_ratio = drive_ratio,
+            .drive_kp = drive_kp,
+            .drive_ki = drive_ki,
+            .drive_kd = drive_kd,
 
             .frame_offset_x = -28.575_cm,
             .frame_offset_y =
@@ -88,17 +99,17 @@ const stingers::swerve::Configuration stingers::swerve::swerve_config = {
         stingers::swerve::Configuration::Module{
             .turn_type = TALON_FX,
             .turn_id = 11, // motor type and CAN id
-            .turn_ratio = 1.0 / 13.3714,
-            .turn_kp = 24.0,
-            .turn_ki = 4.0,
-            .turn_kd = 0.25,
+            .turn_ratio = turn_ratio,
+            .turn_kp = turn_kp,
+            .turn_ki = turn_ki,
+            .turn_kd = turn_kd,
 
             .drive_type = TALON_FX,
             .drive_id = 10,
-            .drive_ratio = 5.01,
-            .drive_kp = 0.1,
-            .drive_ki = 0.0,
-            .drive_kd = 0.0,
+            .drive_ratio = drive_ratio,
+            .drive_kp = drive_kp,
+            .drive_ki = drive_ki,
+            .drive_kd = drive_kd,
 
             .frame_offset_x = 28.575_cm,
             .frame_offset_y =

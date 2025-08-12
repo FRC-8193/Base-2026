@@ -26,13 +26,17 @@ namespace stingers::swerve::motors {
 
 class TalonFxDriveMotor : public DriveMotor {
 public:
-  TalonFxDriveMotor(int id, float ratio, units::meter_t diameter, float ki, float kp, float kd)
+  TalonFxDriveMotor(int id, float ratio, units::meter_t diameter, float kp, float ki, float kd)
       : motor(id), ratio(ratio), diameter(diameter) {
     ctre::phoenix6::configs::Slot0Configs pid_cfg;
     pid_cfg.kP = kp;
     pid_cfg.kI = ki;
     pid_cfg.kD = kd;
 
+    ctre::phoenix6::configs::FeedbackConfigs fb_cfg;
+    fb_cfg.FeedbackSensorSource = ctre::phoenix6::signals::FeedbackSensorSourceValue::RotorSensor;
+
+    this->motor.GetConfigurator().Apply(fb_cfg);
     this->motor.GetConfigurator().Apply(pid_cfg);
   }
 
@@ -48,7 +52,7 @@ private:
 
 class TalonFxTurnMotor : public TurnMotor {
 public:
-  TalonFxTurnMotor(int id, float ratio, float ki, float kp, float kd)
+  TalonFxTurnMotor(int id, float ratio, float kp, float ki, float kd)
       : motor(id), encoder(id + 1), ratio(ratio) {
     ctre::phoenix6::configs::Slot0Configs pid_cfg;
     pid_cfg.kP = kp;
@@ -59,6 +63,8 @@ public:
     fb_cfg.FeedbackRemoteSensorID = id + 1;
     fb_cfg.FeedbackSensorSource =
         ctre::phoenix6::signals::FeedbackSensorSourceValue::RemoteCANcoder;
+    fb_cfg.RotorToSensorRatio = ratio;
+
     this->motor.GetConfigurator().Apply(fb_cfg);
     this->motor.GetConfigurator().Apply(pid_cfg);
   }

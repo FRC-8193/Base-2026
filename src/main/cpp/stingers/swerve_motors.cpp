@@ -38,6 +38,10 @@ void TalonFxDriveMotor::set_ground_speed_setpoint(units::velocity::meters_per_se
 }
 
 void TalonFxTurnMotor::set_angle_setpoint_modspace(units::angle::radian_t angle) {
-  // ah shit i should probably implement this
+  auto ctr = ctre::phoenix6::controls::PositionVoltage(angle);
+  auto stc = this->motor.SetControl(ctr);
+  if (stc.IsError() || stc.IsWarning()) {
+    std::cerr << "Error/Warning setting turn motor control" << std::endl;
+  }
 }
 } // namespace stingers::swerve::motors
