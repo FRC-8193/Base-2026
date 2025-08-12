@@ -115,4 +115,6 @@ const stingers::swerve::Configuration stingers::swerve::swerve_config = {
             .frame_offset_y =
                 -28.575_cm, // you can use other units like _in for inches or _m for meters
             .wheel_diameter = 8.75_cm},
-    }};
+    },
+    .min_speed = 0.05_mps,
+};

@@ -18,6 +18,8 @@
 *   Contact us: robotics@newlothrop.k12.mi.us
 */
 
+#include "units/angle.h"
+#include "units/velocity.h"
 #include <ctre/phoenix6/CANcoder.hpp>
 #include <ctre/phoenix6/TalonFX.hpp>
 #include <stingers/swerve.hpp>
@@ -68,6 +70,8 @@ public:
     this->motor.GetConfigurator().Apply(fb_cfg);
     this->motor.GetConfigurator().Apply(pid_cfg);
   }
+
+  void optimize_angle(units::angle::radian_t& new_angle, units::velocity::meters_per_second_t& new_speed) override;
 
   void set_angle_setpoint_modspace(units::angle::radian_t angle) override;
 

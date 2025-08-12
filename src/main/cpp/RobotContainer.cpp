@@ -4,8 +4,9 @@
 
 #include <RobotContainer.h>
 #include <frc2/command/Commands.h>
+#include <iostream>
 
-RobotContainer::RobotContainer() {
+RobotContainer::RobotContainer() : driver(0) {
   ConfigureBindings();
 
   this->swerve.SetDefaultCommand(this->swerve.drive_command(

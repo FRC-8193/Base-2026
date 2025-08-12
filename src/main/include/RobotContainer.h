@@ -19,5 +19,5 @@ private:
 
   stingers::swerve::SwerveSubsystem swerve;
 
-  frc::Joystick driver = frc::Joystick{0};
+  frc::Joystick driver;
 };

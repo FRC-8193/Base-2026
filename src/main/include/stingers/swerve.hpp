@@ -79,6 +79,11 @@ struct Configuration {
   };
 
   std::vector<Module> modules;
+
+  /**
+   * The minimum speed to treat as "moving" in the swerve drive.
+   */
+  units::velocity::meters_per_second_t min_speed;
 };
 
 const extern Configuration swerve_config;
@@ -107,6 +112,11 @@ public:
    */
   virtual void set_angle_setpoint_modspace(units::angle::radian_t) = 0;
 
+  /**
+   * Optimize the new wheel angle and speed for minimum movement overhead.
+   */
+  virtual void optimize_angle(units::angle::radian_t&, units::velocity::meters_per_second_t&) = 0;
+
   virtual ~TurnMotor() = 0;
 };
 inline TurnMotor::~TurnMotor() = default;
@@ -121,7 +131,10 @@ public:
    */
   inline void set_velocity_setpoint_modspace_radial(units::angle::radian_t angle,
                                                     units::velocity::meters_per_second_t speed) {
-    this->turn_motor->set_angle_setpoint_modspace(angle);
+    if (speed >= swerve_config.min_speed) {
+      this->turn_motor->optimize_angle(angle, speed);
+      this->turn_motor->set_angle_setpoint_modspace(angle);
+    }
     this->drive_motor->set_ground_speed_setpoint(speed);
   }
 
@@ -132,9 +145,9 @@ public:
    */
   inline void set_velocity_setpoint_modspace_cartesian(units::velocity::meters_per_second_t x,
                                                        units::velocity::meters_per_second_t y) {
-    units::angle::radian_t theta = units::angle::radian_t(std::atan2(y.value(), x.value()));
+    units::angle::radian_t theta = units::angle::radian_t(std::atan2(x.value(), y.value()));
     units::velocity::meters_per_second_t magnitude = units::velocity::meters_per_second_t(
-        std::sqrt(x.value() * x.value() + y.value() * y.value()));
+        std::hypot(x.value(), y.value()));
 
     this->set_velocity_setpoint_modspace_radial(theta, magnitude);
   }

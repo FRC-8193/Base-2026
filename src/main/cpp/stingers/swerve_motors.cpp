@@ -32,15 +32,36 @@ void TalonFxDriveMotor::set_ground_speed_setpoint(units::velocity::meters_per_se
   auto ctr = ctre::phoenix6::controls::VelocityVoltage(
       units::angular_velocity::radians_per_second_t(motor_rps * (2.0 * M_PI)));
   auto stc = this->motor.SetControl(ctr);
-  if (stc.IsError() || stc.IsWarning()) {
+  if (!stc.IsOK()) {
     std::cerr << "Error/Warning setting drive motor control" << std::endl;
   }
+}
+
+void TalonFxTurnMotor::optimize_angle(units::angle::radian_t &new_angle, units::velocity::meters_per_second_t &new_speed) {
+  auto sts = this->motor.GetPosition();
+  if (!sts.GetStatus().IsOK()) {
+    std::cerr << "Error/Warning retrieving turn motor position" << std::endl;
+    return;
+  }
+  auto cur_angle = units::angle::radian_t(sts.GetValue());
+  auto half_turn = 3.1415926535_rad;
+
+  double dot = cos((double)(new_angle-cur_angle));
+
+  new_speed *= dot;
+
+  if (dot < 0.0) {
+    new_angle += half_turn;
+  }
+
+  while (new_angle - cur_angle > half_turn) { new_angle -= 2.0*half_turn; }
+  while (new_angle - cur_angle < -half_turn) { new_angle += 2.0*half_turn; }
 }
 
 void TalonFxTurnMotor::set_angle_setpoint_modspace(units::angle::radian_t angle) {
   auto ctr = ctre::phoenix6::controls::PositionVoltage(angle);
   auto stc = this->motor.SetControl(ctr);
-  if (stc.IsError() || stc.IsWarning()) {
+  if (!stc.IsOK()) {
     std::cerr << "Error/Warning setting turn motor control" << std::endl;
   }
 }
