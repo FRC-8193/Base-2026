@@ -84,7 +84,7 @@ void SwerveDrive::set_velocity_setpoint_framespace(
     // clockwise-positive. then we scale it by the turn speed so that we can turn less or in the
     // other direction.
     double mtdx = my * dt;
-    double mtdy = -mx * dt;
+    double mtdy = mx * dt;
 
     // module delta position overall is just the sum of the components
     double mdx = mddx + mtdx;
