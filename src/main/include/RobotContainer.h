@@ -6,7 +6,7 @@
 
 #include <frc/Joystick.h>
 #include <frc2/command/CommandPtr.h>
-#include <stingers/swerve_subsys.hpp>
+#include <stingers/subsystems/swerve.hpp>
 
 class RobotContainer {
 public:
