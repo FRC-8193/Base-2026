@@ -18,10 +18,10 @@
 *   Contact us: robotics@newlothrop.k12.mi.us
 */
 
-#include "units/angular_velocity.h"
 #include <cmath>
 #include <iostream>
-#include <stingers/swerve_motors.hpp>
+#include <stingers/swerve/motors.hpp>
+#include <frc/smartdashboard/SmartDashboard.h>
 
 namespace stingers::swerve::motors {
 
@@ -30,7 +30,7 @@ void TalonFxDriveMotor::set_ground_speed_setpoint(units::velocity::meters_per_se
   float wheel_rps = (float)speed / (float)wheel_circ;
   float motor_rps = wheel_rps / this->ratio;
   auto ctr = ctre::phoenix6::controls::VelocityVoltage(
-      units::angular_velocity::radians_per_second_t(motor_rps * (2.0 * M_PI)));
+      units::angular_velocity::turns_per_second_t(motor_rps));
   auto stc = this->motor.SetControl(ctr);
   if (!stc.IsOK()) {
     std::cerr << "Error/Warning setting drive motor control" << std::endl;

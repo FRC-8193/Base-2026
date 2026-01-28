@@ -10,8 +10,8 @@ RobotContainer::RobotContainer() : driver(0) {
   ConfigureBindings();
 
   this->swerve.SetDefaultCommand(this->swerve.drive_command(
-      [this] { return units::meters_per_second_t(this->driver.GetX()); },
-      [this] { return units::meters_per_second_t(this->driver.GetY()); },
+      [this] { return units::meters_per_second_t(this->driver.GetX())*2.0; },
+      [this] { return units::meters_per_second_t(this->driver.GetY())*2.0; },
       [this] { return units::radians_per_second_t(this->driver.GetTwist()); }));
 }
 

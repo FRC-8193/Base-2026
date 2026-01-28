@@ -22,7 +22,7 @@
 #include "units/velocity.h"
 #include <ctre/phoenix6/CANcoder.hpp>
 #include <ctre/phoenix6/TalonFX.hpp>
-#include <stingers/swerve.hpp>
+#include <stingers/swerve/swerve.hpp>
 
 namespace stingers::swerve::motors {
 
@@ -30,6 +30,8 @@ class TalonFxDriveMotor : public DriveMotor {
 public:
   TalonFxDriveMotor(int id, float ratio, units::meter_t diameter, float kp, float ki, float kd)
       : motor(id), ratio(ratio), diameter(diameter) {
+    static int mid = 0;
+    this->mid = ++mid;
     ctre::phoenix6::configs::Slot0Configs pid_cfg;
     pid_cfg.kP = kp;
     pid_cfg.kI = ki;
@@ -50,6 +52,7 @@ private:
   ctre::phoenix6::hardware::TalonFX motor;
   float ratio;
   units::meter_t diameter;
+  int mid;
 };
 
 class TalonFxTurnMotor : public TurnMotor {

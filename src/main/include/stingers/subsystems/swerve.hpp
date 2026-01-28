@@ -22,7 +22,7 @@
 
 #include <frc2/command/SubsystemBase.h>
 #include <functional>
-#include <stingers/swerve.hpp>
+#include <stingers/swerve/swerve.hpp>
 
 namespace stingers::swerve {
 

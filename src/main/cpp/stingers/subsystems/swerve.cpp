@@ -19,7 +19,7 @@
 */
 
 #include <frc2/command/Commands.h>
-#include <stingers/swerve_subsys.hpp>
+#include <stingers/subsystems/swerve.hpp>
 #include <iostream>
 
 namespace stingers::swerve {

@@ -18,7 +18,7 @@
 *   Contact us: robotics@newlothrop.k12.mi.us
 */
 
-#include <stingers/swerve.hpp>
+#include <stingers/swerve/swerve.hpp>
 
 static const float turn_ratio = 1.0 / 13.3714;
 static const float turn_kp = 24.0 ;
@@ -26,7 +26,7 @@ static const float turn_ki =  4.0 ;
 static const float turn_kd =  0.25;
 
 static const float drive_ratio = 1.0 / 5.01;
-static const float drive_kp = 0.1;
+static const float drive_kp = 0.2;
 static const float drive_ki = 0.0;
 static const float drive_kd = 0.0;
 

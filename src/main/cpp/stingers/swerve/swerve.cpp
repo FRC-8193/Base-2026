@@ -19,8 +19,8 @@
 */
 
 #include <iostream>
-#include <stingers/swerve.hpp>
-#include <stingers/swerve_motors.hpp>
+#include <stingers/swerve/swerve.hpp>
+#include <stingers/swerve/motors.hpp>
 
 namespace stingers::swerve {
 
