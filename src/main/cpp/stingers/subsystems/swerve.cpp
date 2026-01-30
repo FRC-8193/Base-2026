@@ -24,7 +24,7 @@
 
 namespace stingers::swerve {
 
-SwerveSubsystem::SwerveSubsystem() : drive(swerve_config) {
+SwerveSubsystem::SwerveSubsystem() : drive(swerve_config), velocity_sensor(drive) {
   this->SetDefaultCommand(
       this->Run([this]() { this->drive_framespace(0_mps, 0_mps, 0_rad_per_s); }));
 }

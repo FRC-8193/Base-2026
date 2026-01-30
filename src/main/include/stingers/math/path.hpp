@@ -20,13 +20,13 @@
 
 #pragma once
 
-#include <stingers/math/vec.hpp>
+#include <glm/glm.hpp>
 
 namespace stingers::math {
 
 class Path {
 public:
-  virtual Vec2 sample_position(float t) const = 0;
+  virtual glm::vec2 sample_position(float t) const = 0;
 
   virtual ~Path() = 0;
 };

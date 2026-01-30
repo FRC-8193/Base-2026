@@ -18,16 +18,16 @@
 *   Contact us: robotics@newlothrop.k12.mi.us
 */
 
-
 #pragma once
 
 #include <frc2/command/SubsystemBase.h>
 #include <stingers/subsystems/swerve.hpp>
+#include <stingers/math/kalman.hpp>
 
 namespace stingers {
 
 /**
- * The central subsystem used to navigate the robot around the field.
+ * Handles localization
  */
 class NavigationSubsystem : public frc2::SubsystemBase {
 public:
@@ -35,8 +35,11 @@ public:
    * Creates a new navigation subsystem using the configuration defined in `cpp/stigners/config.cpp`
    */
   NavigationSubsystem();
+
+  virtual void Periodic() override;
 private:
   swerve::SwerveSubsystem drive;
+  KalmanFilter filter;
 };
 
 }

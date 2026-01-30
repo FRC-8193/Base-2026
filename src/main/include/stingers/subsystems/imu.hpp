@@ -20,3 +20,25 @@
 
 
 #pragma once
+
+#include <frc2/command/SubsystemBase.h>
+
+namespace stingers {
+
+class IMUSubsystem : public frc2::SubsystemBase {
+public:
+
+  /**
+   * Creates a new IMU subsystem using the configuraion defined in `cpp/stingers/config.cpp`
+   */
+  IMUSubsystem();
+
+
+private:
+};
+
+/*
+ * This comment makes other comments autoformat properly.
+ * Please don't remove it.
+ */
+} // namespace stingers

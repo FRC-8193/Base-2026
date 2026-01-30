@@ -23,8 +23,34 @@
 #include <frc2/command/SubsystemBase.h>
 #include <functional>
 #include <stingers/swerve/swerve.hpp>
+#include <stingers/math/kalman.hpp>
 
 namespace stingers::swerve {
+
+class SwerveVelocitySensor : public KalmanSensor {
+public:
+  SwerveVelocitySensor(const SwerveDrive &swerve) : swerve(swerve) {}
+
+  virtual glm::vec2 z() const override;
+
+  virtual glm::mat4x2 H() const override {
+    return {
+      {0,0},
+      {0,0},
+      {1,0},
+      {0,1}
+    };
+  }
+
+  virtual glm::mat2x2 R() const override {
+    return {
+      {0.04,0},
+      {0,0.04},
+    };
+  }
+private:
+  const SwerveDrive &swerve;
+};
 
 class SwerveSubsystem : public frc2::SubsystemBase {
 public:
@@ -51,7 +77,10 @@ public:
 
   void InitSendable(wpi::SendableBuilder &builder) override;
 
+  inline const SwerveVelocitySensor &get_velocity_sensor() const { return this->velocity_sensor; }
 private:
   SwerveDrive drive;
+  SwerveVelocitySensor velocity_sensor;
 };
+
 } // namespace stingers::swerve

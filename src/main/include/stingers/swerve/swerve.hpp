@@ -188,6 +188,7 @@ public:
                                         units::velocity::meters_per_second_t y,
                                         units::angular_velocity::radians_per_second_t t);
 
+  // TODO: velocity readback
 private:
   friend class SwerveSubsystem;
   std::vector<Module> modules;
