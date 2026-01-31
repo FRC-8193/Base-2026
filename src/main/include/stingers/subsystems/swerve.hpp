@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <wpi/sendable/Sendable.h>
 #include <frc2/command/SubsystemBase.h>
 #include <functional>
 #include <stingers/swerve/swerve.hpp>
@@ -31,7 +32,7 @@ class SwerveVelocitySensor : public KalmanSensor {
 public:
   SwerveVelocitySensor(const SwerveDrive &swerve) : swerve(swerve) {}
 
-  virtual glm::vec2 z() const override;
+  virtual glm::vec2 z() const override { return glm::vec2(0); }
 
   virtual glm::mat4x2 H() const override {
     return {
@@ -48,6 +49,8 @@ public:
       {0,0.04},
     };
   }
+
+  virtual ~SwerveVelocitySensor() override = default;
 private:
   const SwerveDrive &swerve;
 };
@@ -75,7 +78,7 @@ public:
                 std::function<units::velocity::meters_per_second_t()> speed_y,
                 std::function<units::angular_velocity::radians_per_second_t()> speed_r);
 
-  void InitSendable(wpi::SendableBuilder &builder) override;
+  virtual void InitSendable(wpi::SendableBuilder &builder) override;
 
   inline const SwerveVelocitySensor &get_velocity_sensor() const { return this->velocity_sensor; }
 private:

@@ -18,6 +18,7 @@
 *   Contact us: robotics@newlothrop.k12.mi.us
 */
 
+#include <frc/smartdashboard/SmartDashboard.h>
 #include <iostream>
 #include <stingers/swerve/swerve.hpp>
 #include <stingers/swerve/motors.hpp>
@@ -27,6 +28,7 @@ namespace stingers::swerve {
 SwerveDrive::SwerveDrive(const Configuration &config) {
   for (const auto &mod_conf : config.modules) {
     Module module;
+    module.name = mod_conf.name;
     module.cframe_to_cmodule_x = mod_conf.frame_offset_x;
     module.cframe_to_cmodule_y = mod_conf.frame_offset_y;
 

@@ -34,8 +34,8 @@ static const float drive_kd = 0.0;
 const stingers::swerve::Configuration stingers::swerve::swerve_config = {
     // All the modules' settings are here
     .modules = {
-        // Front left
         stingers::swerve::Configuration::Module{
+            .name = "Front Left",
             .turn_type = TALON_FX,
             .turn_id = 2, // motor type and CAN id
             .turn_ratio = turn_ratio,
@@ -54,8 +54,8 @@ const stingers::swerve::Configuration stingers::swerve::swerve_config = {
             .frame_offset_y =  28.575_cm,
                   // you can use other units like _in for inches or _m for meters
             .wheel_diameter = 8.75_cm},
-        // Front right
         stingers::swerve::Configuration::Module{
+            .name = "Front Right",
             .turn_type = TALON_FX,
             .turn_id = 5, // motor type and CAN id
             .turn_ratio = turn_ratio,
@@ -75,8 +75,8 @@ const stingers::swerve::Configuration stingers::swerve::swerve_config = {
             .frame_offset_y =
                 28.575_cm, // you can use other units like _in for inches or _m for meters
             .wheel_diameter = 8.75_cm},
-        // Back left
         stingers::swerve::Configuration::Module{
+            .name = "Back Left",
             .turn_type = TALON_FX,
             .turn_id = 8, // motor type and CAN id
             .turn_ratio = turn_ratio,
@@ -95,8 +95,8 @@ const stingers::swerve::Configuration stingers::swerve::swerve_config = {
             .frame_offset_y =
                 -28.575_cm, // you can use other units like _in for inches or _m for meters
             .wheel_diameter = 8.75_cm},
-        // Back right
         stingers::swerve::Configuration::Module{
+            .name = "Back Right",
             .turn_type = TALON_FX,
             .turn_id = 11, // motor type and CAN id
             .turn_ratio = turn_ratio,

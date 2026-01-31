@@ -27,6 +27,7 @@
 #include <units/length.h>
 #include <units/velocity.h>
 #include <vector>
+#include <string>
 
 enum MotorType { TALON_FX };
 
@@ -34,6 +35,14 @@ namespace stingers::swerve {
 
 struct Configuration {
   struct Module {
+    /**
+     * The name of the swerve module. Should generally be one of:
+     * "Front Left"
+     * "Front Right"
+     * "Back Left"
+     * "Back Right"
+     */
+    std::string name;
     /**
      * The type of the motor controller turning this wheel.
      */
@@ -131,6 +140,8 @@ public:
    */
   inline void set_velocity_setpoint_modspace_radial(units::angle::radian_t angle,
                                                     units::velocity::meters_per_second_t speed) {
+    this->angle_setpoint = angle;
+    this->vel_setpoint = speed;
     if (speed >= swerve_config.min_speed) {
       this->turn_motor->optimize_angle(angle, speed);
       this->turn_motor->set_angle_setpoint_modspace(angle);
@@ -156,8 +167,14 @@ private:
   std::unique_ptr<DriveMotor> drive_motor;
   std::unique_ptr<TurnMotor> turn_motor;
 
+  units::angle::radian_t angle_setpoint;
+  units::velocity::meters_per_second_t vel_setpoint;
+
+  std::string name;
+
   // let the drive controller access the position of the module
   friend class SwerveDrive;
+  friend class SwerveSubsystem;
   units::meter_t cframe_to_cmodule_x;
   units::meter_t cframe_to_cmodule_y;
 };

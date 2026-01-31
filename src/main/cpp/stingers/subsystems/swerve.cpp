@@ -47,17 +47,12 @@ frc2::CommandPtr SwerveSubsystem::drive_command(
 void SwerveSubsystem::InitSendable(wpi::SendableBuilder &builder) {
   builder.SetSmartDashboardType("SwerveDrive");
 
-  static const char *names[] = {
-      "Front Left Angle",  "Front Left Velocity",
+  for (const auto& mod : this->drive.modules) {
+    builder.AddDoubleProperty(mod.name + " Angle", [&]() { return mod.angle_setpoint.to<double>(); }, [](double){});
+    builder.AddDoubleProperty(mod.name + " Velocity", [&]() { return mod.vel_setpoint.to<double>(); }, [](double){});
+  }
 
-      "Front Right Angle", "Front Right Velocity",
-
-      "Back Left Angle",   "Back Left Velocity",
-
-      "Back Right Angle",  "Back Right Velocity",
-
-  };
-
-  // not really sure how to get the data i need here
+  // we don't have this data but it should be displayed in the field widget anyway
+  builder.AddDoubleProperty("Robot Angle", []() { return 0.0; }, [](double){});
 }
 } // namespace stingers::swerve

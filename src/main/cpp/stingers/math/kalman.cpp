@@ -23,7 +23,7 @@
 namespace stingers {
 
 
-KalmanFilter::KalmanFilter(glm::mat4x4 Q, std::optional<std::reference_wrapper<KalmanSensor>> init_sensor) : Q(Q) {
+KalmanFilter::KalmanFilter(glm::mat4x4 Q, std::optional<std::reference_wrapper<const KalmanSensor>> init_sensor) : Q(Q) {
   if (init_sensor.has_value()) {
     const KalmanSensor &sensor = init_sensor->get();
     this->state = glm::transpose(sensor.H()) * sensor.z();
@@ -32,7 +32,7 @@ KalmanFilter::KalmanFilter(glm::mat4x4 Q, std::optional<std::reference_wrapper<K
   }
 }
 
-void KalmanFilter::update(std::vector<std::reference_wrapper<KalmanSensor>> sensors, float dt) {
+void KalmanFilter::update(std::vector<std::reference_wrapper<const KalmanSensor>> sensors, float dt) {
   glm::mat4x4 A = {
   { 1,  0, 0, 0 },
   { 0,  1, 0, 0 },

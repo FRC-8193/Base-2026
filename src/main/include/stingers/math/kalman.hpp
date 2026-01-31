@@ -33,7 +33,10 @@ public:
 
   virtual glm::mat4x2 H() const = 0; // observation matrix
   virtual glm::mat2x2 R() const = 0; // sensor covariance
+
+  virtual ~KalmanSensor() = 0;
 };
+inline KalmanSensor::~KalmanSensor() = default;
 
 class KalmanFilter {
 public:

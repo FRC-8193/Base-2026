@@ -2,6 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+#include <frc/smartdashboard/SmartDashboard.h>
 #include <RobotContainer.h>
 #include <frc2/command/Commands.h>
 #include <iostream>
@@ -9,10 +10,12 @@
 RobotContainer::RobotContainer() : driver(0) {
   ConfigureBindings();
 
+  frc::SmartDashboard::PutData("swerve", &this->swerve);
+  
   this->swerve.SetDefaultCommand(this->swerve.drive_command(
-      [this] { return units::meters_per_second_t(this->driver.GetX())*2.0; },
-      [this] { return units::meters_per_second_t(this->driver.GetY())*2.0; },
-      [this] { return units::radians_per_second_t(this->driver.GetTwist()); }));
+      [this] { return units::meters_per_second_t(this->driver.GetRawAxis(0))*2.0; },
+      [this] { return units::meters_per_second_t(this->driver.GetRawAxis(1))*2.0; },
+      [this] { return units::radians_per_second_t(this->driver.GetRawAxis(2)); }));
 }
 
 void RobotContainer::ConfigureBindings() {}
