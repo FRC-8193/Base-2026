@@ -48,8 +48,8 @@ void SwerveSubsystem::InitSendable(wpi::SendableBuilder &builder) {
   builder.SetSmartDashboardType("SwerveDrive");
 
   for (const auto& mod : this->drive.modules) {
-    builder.AddDoubleProperty(mod.name + " Angle", [&]() { return mod.angle_setpoint.to<double>(); }, [](double){});
-    builder.AddDoubleProperty(mod.name + " Velocity", [&]() { return mod.vel_setpoint.to<double>(); }, [](double){});
+    builder.AddDoubleProperty(mod.name + " Angle", [&]() { return mod.turn_motor->get_angle_real().to<double>(); }, [](double){});
+    builder.AddDoubleProperty(mod.name + " Velocity", [&]() { return mod.drive_motor->get_ground_speed_real().to<double>(); }, [](double){});
   }
 
   // we don't have this data but it should be displayed in the field widget anyway

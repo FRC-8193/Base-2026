@@ -106,6 +106,9 @@ public:
    * Set the setpoint for the ground speed of the module.
    */
   virtual void set_ground_speed_setpoint(units::velocity::meters_per_second_t) = 0;
+  virtual units::velocity::meters_per_second_t get_ground_speed_real() = 0;
+
+  virtual void update_sim(double dt) = 0;
 
   virtual ~DriveMotor() = 0;
 };
@@ -120,11 +123,14 @@ public:
    * Set the setpoint for the angle of the wheel relative to frame forward.
    */
   virtual void set_angle_setpoint_modspace(units::angle::radian_t) = 0;
+  virtual units::angle::radian_t get_angle_real() = 0;
 
   /**
    * Optimize the new wheel angle and speed for minimum movement overhead.
    */
   virtual void optimize_angle(units::angle::radian_t&, units::velocity::meters_per_second_t&) = 0;
+
+  virtual void update_sim(double dt) = 0;
 
   virtual ~TurnMotor() = 0;
 };
@@ -140,8 +146,6 @@ public:
    */
   inline void set_velocity_setpoint_modspace_radial(units::angle::radian_t angle,
                                                     units::velocity::meters_per_second_t speed) {
-    this->angle_setpoint = angle;
-    this->vel_setpoint = speed;
     if (speed >= swerve_config.min_speed) {
       this->turn_motor->optimize_angle(angle, speed);
       this->turn_motor->set_angle_setpoint_modspace(angle);
@@ -163,12 +167,14 @@ public:
     this->set_velocity_setpoint_modspace_radial(theta, magnitude);
   }
 
+  inline void update_sim(double dt) {
+    this->drive_motor->update_sim(dt);
+    this->turn_motor->update_sim(dt);
+  }
+
 private:
   std::unique_ptr<DriveMotor> drive_motor;
   std::unique_ptr<TurnMotor> turn_motor;
-
-  units::angle::radian_t angle_setpoint;
-  units::velocity::meters_per_second_t vel_setpoint;
 
   std::string name;
 
@@ -205,6 +211,9 @@ public:
                                         units::velocity::meters_per_second_t y,
                                         units::angular_velocity::radians_per_second_t t);
 
+  inline void update_sim(double dt) {
+    for (auto &module : this->modules) module.update_sim(dt);
+  }
   // TODO: velocity readback
 private:
   friend class SwerveSubsystem;

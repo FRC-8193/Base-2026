@@ -45,6 +45,9 @@ public:
   }
 
   void set_ground_speed_setpoint(units::velocity::meters_per_second_t speed) override;
+  units::velocity::meters_per_second_t get_ground_speed_real() override;
+
+  void update_sim(double dt) override;
 
   ~TalonFxDriveMotor() override = default;
 
@@ -77,6 +80,9 @@ public:
   void optimize_angle(units::angle::radian_t& new_angle, units::velocity::meters_per_second_t& new_speed) override;
 
   void set_angle_setpoint_modspace(units::angle::radian_t angle) override;
+  units::angle::radian_t get_angle_real() override;
+
+  void update_sim(double dt) override;
 
   ~TalonFxTurnMotor() override = default;
 

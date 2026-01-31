@@ -37,6 +37,19 @@ void TalonFxDriveMotor::set_ground_speed_setpoint(units::velocity::meters_per_se
   }
 }
 
+units::velocity::meters_per_second_t TalonFxDriveMotor::get_ground_speed_real() {
+  units::meter_t wheel_circ = this->diameter * M_PI;
+  // hehe hopefully no fail
+  float motor_rps = this->motor.GetRotorVelocity().GetValue().to<float>();
+  float wheel_rps = motor_rps * this->ratio;
+  return units::velocity::meters_per_second_t(wheel_rps * (float)wheel_circ);
+}
+
+void TalonFxDriveMotor::update_sim(double dt) {
+  double motor_voltage = this->motor.GetMotorVoltage().GetValue().to<double>();
+  // todo
+}
+
 void TalonFxTurnMotor::optimize_angle(units::angle::radian_t &new_angle, units::velocity::meters_per_second_t &new_speed) {
   auto sts = this->motor.GetPosition();
   if (!sts.GetStatus().IsOK()) {
@@ -64,5 +77,13 @@ void TalonFxTurnMotor::set_angle_setpoint_modspace(units::angle::radian_t angle)
   if (!stc.IsOK()) {
     std::cerr << "Error/Warning setting turn motor control" << std::endl;
   }
+}
+
+units::angle::radian_t TalonFxTurnMotor::get_angle_real() {
+  return this->motor.GetPosition().GetValue();
+}
+
+void TalonFxTurnMotor::update_sim(double dt) {
+  // todo
 }
 } // namespace stingers::swerve::motors
