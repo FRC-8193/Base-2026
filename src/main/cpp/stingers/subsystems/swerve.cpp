@@ -20,7 +20,7 @@
 
 #include <frc2/command/Commands.h>
 #include <stingers/subsystems/swerve.hpp>
-#include <iostream>
+#include <stingers/util.hpp>
 
 namespace stingers::swerve {
 
@@ -54,5 +54,9 @@ void SwerveSubsystem::InitSendable(wpi::SendableBuilder &builder) {
 
   // we don't have this data but it should be displayed in the field widget anyway
   builder.AddDoubleProperty("Robot Angle", []() { return 0.0; }, [](double){});
+}
+
+void SwerveSubsystem::SimulationPeriodic() {
+  this->drive.update_sim(stingers::loop_time);
 }
 } // namespace stingers::swerve

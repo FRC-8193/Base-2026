@@ -81,6 +81,8 @@ public:
   virtual void InitSendable(wpi::SendableBuilder &builder) override;
 
   inline const SwerveVelocitySensor &get_velocity_sensor() const { return this->velocity_sensor; }
+
+  void SimulationPeriodic() override;
 private:
   SwerveDrive drive;
   SwerveVelocitySensor velocity_sensor;
