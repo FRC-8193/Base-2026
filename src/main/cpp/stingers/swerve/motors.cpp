@@ -103,18 +103,21 @@ units::angle::radian_t TalonFxTurnMotor::get_angle_real() {
 void TalonFxTurnMotor::update_sim(double dt) {
   double rotor_torque = est_motor_torque(this->motor);
 
-  constexpr double ROTOR_MOI = 8e-5; // i feel like this should be lower but ... idk
+  constexpr double ROTOR_MOI = 8e-5;
 
   double rotor_accel = rotor_torque / ROTOR_MOI;
 
   double cur_vel = this->motor.GetRotorVelocity().GetValueAsDouble() * 2.0 * M_PI;
   double cur_pos = this->encoder.GetPosition().GetValueAsDouble() * 2.0 * M_PI;
+  
+  constexpr double k = 1.5;
+  cur_vel *= exp(-k * dt); // friction force
 
   this->motor.GetSimState().SetRotorAcceleration(units::radians_per_second_squared_t(rotor_accel));
   this->motor.GetSimState().SetRotorVelocity(units::radians_per_second_t(cur_vel + rotor_accel * dt));
   this->encoder.GetSimState().SetVelocity(units::radians_per_second_t(this->ratio * cur_vel));
   this->encoder.GetSimState().SetRawPosition(units::radian_t(cur_pos + this->ratio * cur_vel * dt));
   this->motor.GetSimState().SetRawRotorPosition(units::radian_t(cur_pos / this->ratio));
-
 }
+
 } // namespace stingers::swerve::motors
