@@ -28,6 +28,7 @@
 #include <units/velocity.h>
 #include <vector>
 #include <string>
+#include <utility>
 
 enum MotorType { TALON_FX };
 
@@ -172,6 +173,17 @@ public:
     this->turn_motor->update_sim(dt);
   }
 
+  inline units::velocity::meters_per_second_t estimate_straight_velocity() const {
+    return this->drive_motor->get_ground_speed_real();
+  }
+
+  inline void estimate_velocity_cartesian(units::velocity::meters_per_second_t &x, units::velocity::meters_per_second_t &y) const {
+    auto straight_speed = this->estimate_straight_velocity();
+    double theta = this->turn_motor->get_angle_real().to<double>();
+    x = straight_speed * cos(theta);
+    y = straight_speed * sin(theta);
+  }
+
 private:
   std::unique_ptr<DriveMotor> drive_motor;
   std::unique_ptr<TurnMotor> turn_motor;
@@ -214,7 +226,8 @@ public:
   inline void update_sim(double dt) {
     for (auto &module : this->modules) module.update_sim(dt);
   }
-  // TODO: velocity readback
+
+  void estimate_velocity(units::velocity::meters_per_second_t &x, units::velocity::meters_per_second_t &y) const;
 private:
   friend class SwerveSubsystem;
   std::vector<Module> modules;

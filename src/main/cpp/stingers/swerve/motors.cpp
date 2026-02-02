@@ -103,7 +103,7 @@ units::angle::radian_t TalonFxTurnMotor::get_angle_real() {
 void TalonFxTurnMotor::update_sim(double dt) {
   double rotor_torque = est_motor_torque(this->motor);
 
-  constexpr double ROTOR_MOI = 2e-4;
+  constexpr double ROTOR_MOI = 8e-5; // i feel like this should be lower but ... idk
 
   double rotor_accel = rotor_torque / ROTOR_MOI;
 

@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <units/velocity.h>
 #include <wpi/sendable/Sendable.h>
 #include <frc2/command/SubsystemBase.h>
 #include <functional>
@@ -32,7 +33,11 @@ class SwerveVelocitySensor : public KalmanSensor {
 public:
   SwerveVelocitySensor(const SwerveDrive &swerve) : swerve(swerve) {}
 
-  virtual glm::vec2 z() const override { return glm::vec2(0); }
+  virtual glm::vec2 z() const override {
+    units::velocity::meters_per_second_t x, y;
+    this->swerve.estimate_velocity(x, y);
+    return glm::vec2((float)x, (float)y);
+  }
 
   virtual glm::mat4x2 H() const override {
     return {

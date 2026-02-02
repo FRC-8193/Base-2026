@@ -21,6 +21,7 @@
 #pragma once
 
 #include <ctre/phoenix6/TalonFX.hpp>
+#include <glm/glm.hpp>
 
 namespace stingers {
 
@@ -52,5 +53,30 @@ inline double est_motor_torque(ctre::phoenix6::hardware::TalonFX &motor) {
   static constexpr double Ke = 0.0191;  // V/(rad/s) consistent with Kv
 
   return motor_tau(Kt, R, motor_voltage, Ke, omega);
+}
+
+constexpr glm::mat4 make_q_cv(float dt, float sigma_a) {
+    const float dt2 = dt * dt;
+    const float dt3 = dt2 * dt;
+    const float dt4 = dt2 * dt2;
+
+    const float q = sigma_a * sigma_a;
+
+    // GLM is column-major: mat[col][row]
+    glm::mat4 Q(0.0f);
+
+    Q[0][0] = dt4 / 4.0f;
+    Q[0][2] = dt3 / 2.0f;
+
+    Q[1][1] = dt4 / 4.0f;
+    Q[1][3] = dt3 / 2.0f;
+
+    Q[2][0] = dt3 / 2.0f;
+    Q[2][2] = dt2;
+
+    Q[3][1] = dt3 / 2.0f;
+    Q[3][3] = dt2;
+
+    return q * Q;
 }
 }

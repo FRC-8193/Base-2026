@@ -7,18 +7,18 @@
 #include <frc2/command/Commands.h>
 #include <iostream>
 
-RobotContainer::RobotContainer() : driver(0) {
+RobotContainer::RobotContainer() : navigation(swerve), driver(0) {
   ConfigureBindings();
 
   frc::SmartDashboard::PutData("swerve", &this->swerve);
-  
-  this->swerve.SetDefaultCommand(this->swerve.drive_command(
-      [this] { return units::meters_per_second_t(this->driver.GetRawAxis(0))*2.0; },
-      [this] { return units::meters_per_second_t(this->driver.GetRawAxis(1))*2.0; },
-      [this] { return units::radians_per_second_t(this->driver.GetRawAxis(2)); }));
 }
 
-void RobotContainer::ConfigureBindings() {}
+void RobotContainer::ConfigureBindings() {
+  this->swerve.SetDefaultCommand(this->swerve.drive_command(
+      [this] { return units::meters_per_second_t(this->driver.GetRawAxis(0))*4.0; },
+      [this] { return units::meters_per_second_t(this->driver.GetRawAxis(1))*4.0; },
+      [this] { return units::radians_per_second_t(this->driver.GetRawAxis(2)); }));
+}
 
 frc2::CommandPtr RobotContainer::GetAutonomousCommand() {
   return frc2::cmd::Print("No autonomous command configured");

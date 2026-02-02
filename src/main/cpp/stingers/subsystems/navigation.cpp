@@ -18,15 +18,24 @@
 *   Contact us: robotics@newlothrop.k12.mi.us
 */
 
+#include <frc/smartdashboard/SmartDashboard.h>
 #include <stingers/subsystems/navigation.hpp>
+#include <stingers/util.hpp>
 
 namespace stingers {
+
+
+NavigationSubsystem::NavigationSubsystem(const swerve::SwerveSubsystem &drive) : drive(drive), filter(make_q_cv(loop_time, 1.0), {}) {
+  frc::SmartDashboard::PutData("Field", &this->field);
+}
 
 void NavigationSubsystem::Periodic() {
   std::vector<std::reference_wrapper<const KalmanSensor>> sensors = {};
 
   sensors.push_back(this->drive.get_velocity_sensor());
 
-  this->filter.update(sensors, 0.05);
+  this->filter.update(sensors, loop_time);
+
+  this->field.SetRobotPose(units::meter_t(this->filter.state.x), units::meter_t(this->filter.state.y), frc::Rotation2d());
 }
 }

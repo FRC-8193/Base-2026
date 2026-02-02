@@ -97,4 +97,16 @@ void SwerveDrive::set_velocity_setpoint_framespace(
   }
 }
 
+// TODO: angular velocity
+void SwerveDrive::estimate_velocity(units::velocity::meters_per_second_t &x, units::velocity::meters_per_second_t &y) const {
+  int n = this->modules.size();
+  x = y = 0_mps;
+  units::velocity::meters_per_second_t mx, my;
+  for (const auto &mod : this->modules) {
+    mod.estimate_velocity_cartesian(mx, my);
+    x += mx / n;
+    y += my / n;
+  }
+}
+
 } // namespace stingers::swerve
