@@ -20,8 +20,37 @@
 
 #pragma once
 
+#include <ctre/phoenix6/TalonFX.hpp>
+
 namespace stingers {
 
 constexpr double loop_time = 0.02;
 
+inline double motor_tau(double Kt, double R, double V, double Ke, double omega) {
+  return (Kt / R) * (V - Ke * omega);
+}
+
+inline double est_motor_torque(ctre::phoenix6::hardware::TalonFX &motor) {
+  // Commanded motor/output voltage
+  double motor_voltage =
+      motor.GetMotorVoltage().GetValue().to<double>();
+
+  // Use bus voltage to clamp (keeps the motor model honest)
+  const double supply_voltage =
+      motor.GetSupplyVoltage().GetValue().to<double>();
+
+  motor_voltage = std::clamp(
+      motor_voltage,
+      -supply_voltage,
+       supply_voltage);
+
+  double omega = motor.GetRotorVelocity().GetValueAsDouble() * 2.0 * M_PI;
+
+  // kraken x60 motor constants (TODO: update this to be dynamic when changing to 2026 [maybe])
+  static constexpr double R  = 0.033;   // ohms (approx)
+  static constexpr double Kt = 0.0191;  // N·m/A
+  static constexpr double Ke = 0.0191;  // V/(rad/s) consistent with Kv
+
+  return motor_tau(Kt, R, motor_voltage, Ke, omega);
+}
 }

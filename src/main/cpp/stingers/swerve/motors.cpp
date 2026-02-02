@@ -23,12 +23,9 @@
 #include <stingers/swerve/motors.hpp>
 #include <ctre/phoenix6/sim/TalonFXSimState.hpp>
 #include <frc/smartdashboard/SmartDashboard.h>
+#include <stingers/util.hpp>
 
 namespace stingers::swerve::motors {
-
-static double motor_tau(double Kt, double R, double V, double Ke, double omega) {
-  return (Kt / R) * (V - Ke * omega);
-}
 
 void TalonFxDriveMotor::set_ground_speed_setpoint(units::velocity::meters_per_second_t speed) {
   units::meter_t wheel_circ = this->diameter * M_PI;
@@ -51,53 +48,23 @@ units::velocity::meters_per_second_t TalonFxDriveMotor::get_ground_speed_real() 
 }
 
 void TalonFxDriveMotor::update_sim(double dt) {
-  // TODO: set simstate motor type when switching to 2026
-  
-  // Commanded motor/output voltage
-  double motor_voltage =
-      this->motor.GetMotorVoltage().GetValue().to<double>();
-
-  // Use bus voltage to clamp (keeps the motor model honest)
-  const double supply_voltage =
-      this->motor.GetSupplyVoltage().GetValue().to<double>();
-
-  motor_voltage = std::clamp(
-      motor_voltage,
-      -supply_voltage,
-       supply_voltage);
-
-  double omega = this->motor.GetRotorVelocity().GetValueAsDouble() * 2.0 * M_PI;
-
-  if (omega != omega) omega = 0.0;
-
-  // kraken x60 motor constants
-  static constexpr double R  = 0.033;   // ohms (approx)
-  static constexpr double Kt = 0.0191;  // N·m/A
-  static constexpr double Ke = 0.0191;  // V/(rad/s) consistent with Kv
-
-  static constexpr double robot_mass = 50; // kg
-  static constexpr double wheel_mass = robot_mass / 4.0; // just assume each wheel moves 1/4 of the robot
-
-  double rotor_torque = motor_tau(Kt, R, motor_voltage, Ke, omega);
+  double rotor_torque = est_motor_torque(this->motor);
   double wheel_torque = rotor_torque / this->ratio;
 
   double ground_force = wheel_torque / (0.5 * (double)this->diameter);
+
+  static constexpr double robot_mass = 50; // kg
+  static constexpr double wheel_mass = robot_mass / 4.0; // just assume each wheel moves 1/4 of the robot
 
   double ground_accel = ground_force / wheel_mass;
 
   double wheel_accel = ground_accel / (0.5 * (double)this->diameter);
   double rotor_accel = wheel_accel / this->ratio;
 
-  std::cout << "rotor_tau=" << rotor_torque
-            << " wheel_tau=" << wheel_torque
-            << " ground_F=" << ground_force
-            << " ground_a=" << ground_accel
-            << " wheel_alpha=" << wheel_accel
-            << " rotor_alpha=" << rotor_accel
-            << std::endl;
+  double cur_vel = this->motor.GetRotorVelocity().GetValueAsDouble() * 2.0 * M_PI;
 
   this->motor.GetSimState().SetRotorAcceleration(units::radians_per_second_squared_t(rotor_accel));
-  this->motor.GetSimState().SetRotorVelocity(units::radians_per_second_t(omega + rotor_accel * dt));
+  this->motor.GetSimState().SetRotorVelocity(units::radians_per_second_t(cur_vel + rotor_accel * dt));
 }
 
 void TalonFxTurnMotor::optimize_angle(units::angle::radian_t &new_angle, units::velocity::meters_per_second_t &new_speed) {
@@ -134,6 +101,20 @@ units::angle::radian_t TalonFxTurnMotor::get_angle_real() {
 }
 
 void TalonFxTurnMotor::update_sim(double dt) {
-  // todo
+  double rotor_torque = est_motor_torque(this->motor);
+
+  constexpr double ROTOR_MOI = 2e-4;
+
+  double rotor_accel = rotor_torque / ROTOR_MOI;
+
+  double cur_vel = this->motor.GetRotorVelocity().GetValueAsDouble() * 2.0 * M_PI;
+  double cur_pos = this->encoder.GetPosition().GetValueAsDouble() * 2.0 * M_PI;
+
+  this->motor.GetSimState().SetRotorAcceleration(units::radians_per_second_squared_t(rotor_accel));
+  this->motor.GetSimState().SetRotorVelocity(units::radians_per_second_t(cur_vel + rotor_accel * dt));
+  this->encoder.GetSimState().SetVelocity(units::radians_per_second_t(this->ratio * cur_vel));
+  this->encoder.GetSimState().SetRawPosition(units::radian_t(cur_pos + this->ratio * cur_vel * dt));
+  this->motor.GetSimState().SetRawRotorPosition(units::radian_t(cur_pos / this->ratio));
+
 }
 } // namespace stingers::swerve::motors
