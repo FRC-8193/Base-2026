@@ -28,8 +28,8 @@ namespace stingers::swerve::motors {
 
 class TalonFxDriveMotor : public DriveMotor {
 public:
-  TalonFxDriveMotor(int id, float ratio, units::meter_t diameter, float kp, float ki, float kd)
-      : motor(id), ratio(ratio), diameter(diameter) {
+  TalonFxDriveMotor(int id, float ratio, units::meter_t diameter, float kp, float ki, float kd, float ks, float kv, float ka)
+      : motor(id), ratio(ratio), diameter(diameter), ks(ks), kv(kv), ka(ka) {
     static int mid = 0;
     this->mid = ++mid;
     ctre::phoenix6::configs::Slot0Configs pid_cfg;
@@ -55,6 +55,8 @@ private:
   ctre::phoenix6::hardware::TalonFX motor;
   float ratio;
   units::meter_t diameter;
+  units::meters_per_second_t prev_speed;
+  float ks, kv, ka;
   int mid;
 };
 

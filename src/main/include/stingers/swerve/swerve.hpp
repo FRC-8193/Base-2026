@@ -71,6 +71,7 @@ struct Configuration {
      */
     float drive_ratio;
     float drive_kp, drive_ki, drive_kd;
+    float drive_ks, drive_kv, drive_ka;
 
     /**
      * The distance in meters from the center of the frame to the center of the module, over the X

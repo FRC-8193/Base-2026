@@ -26,9 +26,12 @@ static const float turn_ki =  4.0 ;
 static const float turn_kd =  0.25;
 
 static const float drive_ratio = 1.0 / 5.01;
-static const float drive_kp = 0.2;
+static const float drive_kp = 0.1;
 static const float drive_ki = 0.0;
 static const float drive_kd = 0.0;
+static const float drive_ks = 0.1;
+static const float drive_kv = 0.13;
+static const float drive_ka = 0.004;
 
 // Base swerve configuration, excluding navigational stuff
 const stingers::swerve::Configuration stingers::swerve::swerve_config = {
@@ -49,6 +52,9 @@ const stingers::swerve::Configuration stingers::swerve::swerve_config = {
             .drive_kp = drive_kp,
             .drive_ki = drive_ki,
             .drive_kd = drive_kd,
+            .drive_ks = drive_ks,
+            .drive_kv = drive_kv,
+            .drive_ka = drive_ka,
 
             .frame_offset_x = -28.575_cm,
             .frame_offset_y =  28.575_cm,
@@ -69,7 +75,9 @@ const stingers::swerve::Configuration stingers::swerve::swerve_config = {
             .drive_kp = drive_kp,
             .drive_ki = drive_ki,
             .drive_kd = drive_kd,
-
+            .drive_ks = drive_ks,
+            .drive_kv = drive_kv,
+            .drive_ka = drive_ka,
 
             .frame_offset_x = 28.575_cm,
             .frame_offset_y =
@@ -90,6 +98,9 @@ const stingers::swerve::Configuration stingers::swerve::swerve_config = {
             .drive_kp = drive_kp,
             .drive_ki = drive_ki,
             .drive_kd = drive_kd,
+            .drive_ks = drive_ks,
+            .drive_kv = drive_kv,
+            .drive_ka = drive_ka,
 
             .frame_offset_x = -28.575_cm,
             .frame_offset_y =
@@ -110,6 +121,9 @@ const stingers::swerve::Configuration stingers::swerve::swerve_config = {
             .drive_kp = drive_kp,
             .drive_ki = drive_ki,
             .drive_kd = drive_kd,
+            .drive_ks = drive_ks,
+            .drive_kv = drive_kv,
+            .drive_ka = drive_ka,
 
             .frame_offset_x = 28.575_cm,
             .frame_offset_y =

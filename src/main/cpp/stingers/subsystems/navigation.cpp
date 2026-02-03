@@ -37,5 +37,6 @@ void NavigationSubsystem::Periodic() {
   this->filter.update(sensors, loop_time);
 
   this->field.SetRobotPose(units::meter_t(this->filter.state.x), units::meter_t(this->filter.state.y), frc::Rotation2d());
+  frc::SmartDashboard::PutNumber("robot vx", this->drive.get_velocity_sensor().z().x);
 }
 }

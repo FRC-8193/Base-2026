@@ -15,8 +15,8 @@ RobotContainer::RobotContainer() : navigation(swerve), driver(0) {
 
 void RobotContainer::ConfigureBindings() {
   this->swerve.SetDefaultCommand(this->swerve.drive_command(
-      [this] { return units::meters_per_second_t(this->driver.GetRawAxis(0))*4.0; },
-      [this] { return units::meters_per_second_t(this->driver.GetRawAxis(1))*4.0; },
+      [this] { return units::meters_per_second_t(this->driver.GetRawAxis(0))*2.0; },
+      [this] { return units::meters_per_second_t(this->driver.GetRawAxis(1))*2.0; },
       [this] { return units::radians_per_second_t(this->driver.GetRawAxis(2)); }));
 }
 

@@ -27,16 +27,31 @@
 
 namespace stingers::swerve::motors {
 
-void TalonFxDriveMotor::set_ground_speed_setpoint(units::velocity::meters_per_second_t speed) {
-  units::meter_t wheel_circ = this->diameter * M_PI;
-  float wheel_rps = (float)speed / (float)wheel_circ;
-  float motor_rps = wheel_rps / this->ratio;
-  auto ctr = ctre::phoenix6::controls::VelocityVoltage(
-      units::angular_velocity::turns_per_second_t(motor_rps));
-  auto stc = this->motor.SetControl(ctr);
-  if (!stc.IsOK()) {
-    std::cerr << "Error/Warning setting drive motor control" << std::endl;
-  }
+void TalonFxDriveMotor::set_ground_speed_setpoint(units::meters_per_second_t speed) {
+  double dt = loop_time;
+
+  units::meter_t wheel_circ = this->diameter * std::numbers::pi;
+
+  auto wheel_rps  = speed / wheel_circ;
+  auto motor_rps  = wheel_rps / this->ratio;
+
+  auto wheel_rps2 = (speed - this->prev_speed) / dt / wheel_circ;
+  auto motor_rps2 = wheel_rps2 / this->ratio;
+
+  double ff =
+      this->ks * std::copysign(1.0, motor_rps.value())
+    + this->kv * motor_rps.value()
+    + this->ka * motor_rps2.value();
+
+  ctre::phoenix6::controls::VelocityVoltage ctr{
+      units::turns_per_second_t(motor_rps.value())};
+
+  ctr.Slot = 0;
+  ctr.FeedForward = units::volt_t(ff);
+
+  this->motor.SetControl(ctr);
+
+  this->prev_speed = speed;
 }
 
 units::velocity::meters_per_second_t TalonFxDriveMotor::get_ground_speed_real() {
@@ -49,7 +64,23 @@ units::velocity::meters_per_second_t TalonFxDriveMotor::get_ground_speed_real() 
 
 void TalonFxDriveMotor::update_sim(double dt) {
   double rotor_torque = est_motor_torque(this->motor);
-  double wheel_torque = rotor_torque / this->ratio;
+
+  // --- add friction ---
+  double wheel_speed = get_ground_speed_real().to<double>(); // m/s
+  double friction_torque = 0.0;
+
+  constexpr double kS = 0.3; // N·m
+  constexpr double kVisc = 0.05; // N·m per m/s wheel speed
+
+  if (std::abs(wheel_speed) < 0.01)
+      friction_torque = std::copysign(kS, rotor_torque);
+  else
+      friction_torque = kVisc * wheel_speed;
+
+  rotor_torque -= friction_torque;
+
+  // continue your existing simulation
+  double wheel_torque = rotor_torque / ratio;
 
   double ground_force = wheel_torque / (0.5 * (double)this->diameter);
 
@@ -112,6 +143,7 @@ void TalonFxTurnMotor::update_sim(double dt) {
   
   constexpr double k = 1.5;
   cur_vel *= exp(-k * dt); // friction force
+  // should simulate static friction but this works ok
 
   this->motor.GetSimState().SetRotorAcceleration(units::radians_per_second_squared_t(rotor_accel));
   this->motor.GetSimState().SetRotorVelocity(units::radians_per_second_t(cur_vel + rotor_accel * dt));

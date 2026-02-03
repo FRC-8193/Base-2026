@@ -36,7 +36,7 @@ SwerveDrive::SwerveDrive(const Configuration &config) {
     case TALON_FX:
       module.drive_motor = std::make_unique<motors::TalonFxDriveMotor>(
           mod_conf.drive_id, mod_conf.drive_ratio, mod_conf.wheel_diameter, mod_conf.drive_kp,
-          mod_conf.drive_ki, mod_conf.drive_kd);
+          mod_conf.drive_ki, mod_conf.drive_kd, mod_conf.drive_ks, mod_conf.drive_kv, mod_conf.drive_ka);
       break;
     default:
       std::cerr << "ERROR: Unknown drive motor type!" << std::endl;
