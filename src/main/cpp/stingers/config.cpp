@@ -19,6 +19,7 @@
 */
 
 #include <stingers/swerve/swerve.hpp>
+#include <stingers/subsystems/turret.hpp>
 
 static const float turn_ratio = 1.0 / 13.3714;
 static const float turn_kp = 24.0 ;
@@ -32,6 +33,11 @@ static const float drive_kd = 0.0;
 static const float drive_ks = 0.1;
 static const float drive_kv = 0.13;
 static const float drive_ka = 0.004;
+
+const stingers::TurretConfig stingers::turret_config = {
+  .aim_id = 20,
+  .aim_to_turret_ratio = 5.625
+};
 
 // Base swerve configuration, excluding navigational stuff
 const stingers::swerve::Configuration stingers::swerve::swerve_config = {
