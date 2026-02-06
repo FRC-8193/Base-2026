@@ -36,6 +36,9 @@ public:
     pid_cfg.kP = kp;
     pid_cfg.kI = ki;
     pid_cfg.kD = kd;
+    pid_cfg.kS = ks;
+    pid_cfg.kV = kv;
+    pid_cfg.kA = ka;
 
     ctre::phoenix6::configs::FeedbackConfigs fb_cfg;
     fb_cfg.FeedbackSensorSource = ctre::phoenix6::signals::FeedbackSensorSourceValue::RotorSensor;

@@ -28,26 +28,15 @@
 namespace stingers::swerve::motors {
 
 void TalonFxDriveMotor::set_ground_speed_setpoint(units::meters_per_second_t speed) {
-  double dt = loop_time;
-
   units::meter_t wheel_circ = this->diameter * std::numbers::pi;
 
   auto wheel_rps  = speed / wheel_circ;
   auto motor_rps  = wheel_rps / this->ratio;
 
-  auto wheel_rps2 = (speed - this->prev_speed) / dt / wheel_circ;
-  auto motor_rps2 = wheel_rps2 / this->ratio;
-
-  double ff =
-      this->ks * std::copysign(1.0, motor_rps.value())
-    + this->kv * motor_rps.value()
-    + this->ka * motor_rps2.value();
-
   ctre::phoenix6::controls::VelocityVoltage ctr{
       units::turns_per_second_t(motor_rps.value())};
 
   ctr.Slot = 0;
-  ctr.FeedForward = units::volt_t(ff);
 
   this->motor.SetControl(ctr);
 
