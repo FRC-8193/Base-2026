@@ -8,6 +8,7 @@
 #include <frc2/command/CommandPtr.h>
 #include <stingers/subsystems/swerve.hpp>
 #include <stingers/subsystems/navigation.hpp>
+#include <stingers/subsystems/turret.hpp>
 
 class RobotContainer {
 public:
@@ -20,6 +21,7 @@ private:
 
   stingers::swerve::SwerveSubsystem swerve;
   stingers::NavigationSubsystem navigation;
+  stingers::TurretSubsystem turret;
 
   frc::Joystick driver;
 };

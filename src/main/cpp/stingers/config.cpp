@@ -34,6 +34,8 @@ static const float drive_ks = 0.1;
 static const float drive_kv = 0.13;
 static const float drive_ka = 0.004;
 
+// turret kS = 0.225, kV = 0.625
+
 const stingers::TurretConfig stingers::turret_config = {
   .aim_id = 20,
   .aim_to_turret_ratio = 5.625

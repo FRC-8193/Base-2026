@@ -37,6 +37,8 @@ public:
   TurretSubsystem();
 
   frc2::CommandPtr hub_aim_cmd(glm::vec2 hub_position);
+
+  void set_aim_angle(units::radian_t angle);
 private:
   ctre::phoenix6::hardware::TalonFX aim_motor;
 };

@@ -19,6 +19,7 @@
 */
 
 #include <stingers/subsystems/turret.hpp>
+#include <ctre/phoenix6/controls/MotionMagicVoltage.hpp>
 
 namespace stingers {
 
@@ -29,4 +30,8 @@ TurretSubsystem::TurretSubsystem() : aim_motor(turret_config.aim_id) {
   
 }
 
+void TurretSubsystem::set_aim_angle(units::radian_t angle) {
+  auto ctr = ctre::phoenix6::controls::MotionMagicVoltage(angle).WithSlot(0);
+  this->aim_motor.SetControl(ctr);
+}
 }
