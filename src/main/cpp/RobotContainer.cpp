@@ -8,7 +8,7 @@
 #include <stingers/commands/follow_path.hpp>
 #include <stingers/math/linear_path.hpp>
 
-RobotContainer::RobotContainer() : navigation(swerve), driver(0) {
+RobotContainer::RobotContainer() : navigation(swerve, imu), driver(0) {
   ConfigureBindings();
 
   frc::SmartDashboard::PutData("swerve", &this->swerve);
@@ -23,7 +23,7 @@ void RobotContainer::ConfigureBindings() {
 
 frc2::CommandPtr RobotContainer::GetAutonomousCommand() {
   stingers::FollowPathConfig config = {
-    .aggressiveness = 1.0,
+    .aggressiveness = 0.25,
     .stop_at_end = true
   };
   return frc2::cmd::RepeatingSequence(

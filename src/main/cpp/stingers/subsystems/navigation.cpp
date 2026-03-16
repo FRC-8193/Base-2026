@@ -24,7 +24,7 @@
 
 namespace stingers {
 
-NavigationSubsystem::NavigationSubsystem(const swerve::SwerveSubsystem &drive) : drive(drive), filter(make_q_cv(loop_time, (float)robot_linear_accel), {}) {
+NavigationSubsystem::NavigationSubsystem(const swerve::SwerveSubsystem &drive, IMUSubsystem &imu) : drive(drive), imu(imu), filter(make_q_cv(loop_time, (float)robot_linear_accel), {}) {
   frc::SmartDashboard::PutData("Field", &this->field);
 }
 
@@ -43,7 +43,7 @@ void NavigationSubsystem::Periodic() {
 
   this->filter.update(sensors, loop_time);
 
-  this->field.SetRobotPose(units::meter_t(this->filter.state.x), units::meter_t(this->filter.state.y), frc::Rotation2d());
+  this->field.SetRobotPose(units::meter_t(this->filter.state.x), units::meter_t(this->filter.state.y), frc::Rotation2d(this->imu.get_yaw()));
   frc::SmartDashboard::PutNumber("robot vx", this->drive.get_velocity_sensor().z().x);
   frc::SmartDashboard::PutNumber("robot x", this->filter.state.x);
 }

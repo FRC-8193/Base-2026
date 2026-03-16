@@ -38,7 +38,7 @@ static const float drive_kv = 0.1;
 static const float drive_ka = 0.04;
 
 // estimate, test me!
-const units::acceleration::meters_per_second_squared_t stingers::robot_linear_accel = 1_mps_sq;
+const units::acceleration::meters_per_second_squared_t stingers::robot_linear_accel = 2_mps_sq;
 const units::velocity::meters_per_second_t stingers::robot_linear_max_vel = 5.2_mps;
 // turret kS = 0.225, kV = 0.625
 
