@@ -21,21 +21,21 @@
 #include <stingers/swerve/swerve.hpp>
 #include <stingers/util.hpp>
 #include <stingers/subsystems/turret.hpp>
-#include <stingers/subsystems/imu.hpp>
+//#include <stingers/subsystems/imu.hpp>
 
 static const float turn_ratio = 1.0 / 13.3714;
-static const float turn_kp = 0.2;
+static const float turn_kp = 40;
 static const float turn_ki = 0.0;
 static const float turn_kd = 0.0;
 static const float turn_ks = 0.0;//0.026;
 
 static const float drive_ratio = 1.0 / 5.01;
-static const float drive_kp = 0.1;
+static const float drive_kp = 0.25;
 static const float drive_ki = 0.0;
 static const float drive_kd = 0.0;
-static const float drive_ks = 0.1;
-static const float drive_kv = 0.13;
-static const float drive_ka = 0.004;
+static const float drive_ks = 0.185;
+static const float drive_kv = 0.1;
+static const float drive_ka = 0.04;
 
 // estimate, test me!
 const units::acceleration::meters_per_second_squared_t stingers::robot_linear_accel = 1_mps_sq;
