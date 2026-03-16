@@ -30,6 +30,9 @@ TurretSubsystem::TurretSubsystem() : aim_motor(turret_config.aim_id) {
   
 }
 
+frc2::CommandPtr TurretSubsystem::aim_command(NavigationSubsystem &navigation) {
+}
+
 void TurretSubsystem::set_aim_angle(units::radian_t angle) {
   auto ctr = ctre::phoenix6::controls::MotionMagicVoltage(angle).WithSlot(0);
   this->aim_motor.SetControl(ctr);
