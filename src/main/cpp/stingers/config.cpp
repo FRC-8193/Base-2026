@@ -44,7 +44,7 @@ const units::velocity::meters_per_second_t stingers::robot_linear_max_vel = 5.2_
 // turret kS = 0.225, kV = 0.625
 
 const stingers::TurretConfig stingers::turret_config = {
-  .aim_id = 20,
+  .aim_id = 15,
   .aim_to_turret_ratio = 5.625
 };
 

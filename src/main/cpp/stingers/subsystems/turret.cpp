@@ -24,13 +24,12 @@
 namespace stingers {
 
 TurretSubsystem::TurretSubsystem() : aim_motor(turret_config.aim_id) {
-  ctre::phoenix6::configs::FeedbackConfigs fb_cfg = {};
-  fb_cfg.FeedbackSensorSource = ctre::phoenix6::signals::FeedbackSensorSourceValue::RotorSensor;
-  fb_cfg.SensorToMechanismRatio = turret_config.aim_to_turret_ratio;
-  
 }
 
 frc2::CommandPtr TurretSubsystem::aim_command(NavigationSubsystem &navigation) {
+  return this->Run([&navigation, this] {
+    this->set_aim_angle(units::angle::radian_t(fmodf(navigation.get_yaw(), 2.0 * M_PI)));
+  });
 }
 
 void TurretSubsystem::set_aim_angle(units::radian_t angle) {

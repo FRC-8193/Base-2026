@@ -16,9 +16,11 @@ RobotContainer::RobotContainer() : swerve(imu), navigation(swerve, imu), driver(
 
 void RobotContainer::ConfigureBindings() {
   this->swerve.SetDefaultCommand(this->swerve.drive_command(
-      [this] { return units::meters_per_second_t(this->driver.GetRawAxis(0))*2.0; },
-      [this] { return units::meters_per_second_t(this->driver.GetRawAxis(1))*2.0; },
+      [this] { return units::meters_per_second_t(-this->driver.GetRawAxis(0))*2.0; },
+      [this] { return units::meters_per_second_t(-this->driver.GetRawAxis(1))*2.0; },
       [this] { return units::radians_per_second_t(this->driver.GetRawAxis(2)); }));
+
+  this->turret.SetDefaultCommand(this->turret.aim_command(this->navigation));
 }
 
 frc2::CommandPtr RobotContainer::GetAutonomousCommand() {

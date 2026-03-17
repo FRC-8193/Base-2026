@@ -33,7 +33,7 @@ struct TurretConfig {
 };
 const extern TurretConfig turret_config;
 
-class TurretSubsystem {
+class TurretSubsystem : public frc2::SubsystemBase {
 public:
   TurretSubsystem();
 

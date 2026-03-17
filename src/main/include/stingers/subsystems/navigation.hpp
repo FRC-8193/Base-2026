@@ -41,6 +41,7 @@ public:
 
   glm::vec2 get_frame_position() const;
   glm::vec2 get_frame_velocity_fieldspace() const;
+  float get_yaw() const { return this->yaw; } // radians
   inline frc::Field2d &get_field() { return this->field; }
 
   virtual void Periodic() override;
