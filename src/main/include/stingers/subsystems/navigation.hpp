@@ -22,6 +22,7 @@
 
 #include <frc2/command/SubsystemBase.h>
 #include <stingers/subsystems/swerve.hpp>
+#include <stingers/subsystems/vision.hpp>
 #include <stingers/math/kalman.hpp>
 #include <stingers/subsystems/imu.hpp>
 #include <frc/smartdashboard/Field2d.h>
@@ -45,6 +46,7 @@ public:
   virtual void Periodic() override;
 private:
   const swerve::SwerveSubsystem &drive;
+  VisionSubsystem vision;
   IMUSubsystem &imu;
   KalmanFilter filter;
   frc::Field2d field;

@@ -41,6 +41,10 @@ void NavigationSubsystem::Periodic() {
 
   sensors.push_back(this->drive.get_velocity_sensor());
 
+  for (const auto &sensor : this->vision.get_sensors()) {
+    sensors.push_back(sensor);
+  }
+
   this->filter.update(sensors, loop_time);
 
   this->field.SetRobotPose(units::meter_t(this->filter.state.x), units::meter_t(this->filter.state.y), frc::Rotation2d(this->imu.get_yaw()));

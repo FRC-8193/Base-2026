@@ -21,3 +21,60 @@
 #pragma once
 
 #include <photon/PhotonPoseEstimator.h>
+#include <photon/PhotonUtils.h>
+#include <stingers/math/kalman.hpp>
+#include <vector>
+#include <string>
+
+namespace stingers {
+
+class VisionPositionSensor : public KalmanSensor {
+public:
+  VisionPositionSensor(std::string camera_name, frc::AprilTagFieldLayout layout, frc::Transform3d robot_to_cam) : camera(camera_name), pose_estimator(layout, robot_to_cam) {}
+
+  virtual glm::vec2 z() const override {
+    return this->last_z;
+  }
+
+  virtual glm::mat4x2 H() const override {
+    return {
+      {1,0},
+      {0,1},
+      {0,0},
+      {0,0}
+    };
+  }
+
+  virtual glm::mat2x2 R() const override {
+    return this->last_R;
+  }
+
+  // returns true if update was successful and a valid measurement is ready
+  bool update();
+
+private:
+  photon::PhotonCamera camera;
+  photon::PhotonPoseEstimator pose_estimator;
+
+  glm::vec2 last_z = glm::vec2(0,0);
+  glm::mat4x2 last_R = glm::mat2x2(std::numeric_limits<float>::max());
+};
+
+struct VisionConfigs {
+  std::vector<std::string> camera_names;
+  std::vector<frc::Transform3d> robot_to_camera_transforms;
+  frc::AprilTagFieldLayout field_layout;
+};
+
+const extern VisionConfigs vision_configs;
+
+class VisionSubsystem {
+public:
+  VisionSubsystem();
+
+  // updates and returns all sensors with valid measurements
+  std::vector<std::reference_wrapper<const VisionPositionSensor>> get_sensors();
+private:
+  std::vector<VisionPositionSensor> sensors;
+};
+}

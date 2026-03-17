@@ -21,6 +21,7 @@
 #include <stingers/swerve/swerve.hpp>
 #include <stingers/util.hpp>
 #include <stingers/subsystems/turret.hpp>
+#include <stingers/subsystems/vision.hpp>
 //#include <stingers/subsystems/imu.hpp>
 
 static const float turn_ratio = 1.0 / 13.3714;
@@ -45,6 +46,12 @@ const units::velocity::meters_per_second_t stingers::robot_linear_max_vel = 5.2_
 const stingers::TurretConfig stingers::turret_config = {
   .aim_id = 20,
   .aim_to_turret_ratio = 5.625
+};
+
+const stingers::VisionConfigs stingers::vision_configs = {
+  .camera_names = { "FrontFacingCamera" },
+  .robot_to_camera_transforms = { {} },
+  .field_layout = frc::AprilTagFieldLayout::LoadField(frc::AprilTagField::kDefaultField)
 };
 
 // Base swerve configuration, excluding navigational stuff
