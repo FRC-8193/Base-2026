@@ -23,6 +23,7 @@
 #include <ctre/phoenix6/TalonFX.hpp>
 #include <units/velocity.h>
 #include <glm/glm.hpp>
+#include <cmath>
 
 namespace stingers {
 
@@ -82,5 +83,9 @@ constexpr glm::mat4 make_q_cv(float dt, float sigma_a) {
     Q[3][3] = dt2;
 
     return q * Q;
+}
+
+inline constexpr float angle_diff(float target, float current) {
+  return std::atan2(std::sin(target - current), std::cos(target - current));
 }
 }

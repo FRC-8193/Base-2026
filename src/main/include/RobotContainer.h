@@ -20,8 +20,8 @@ public:
 private:
   void ConfigureBindings();
 
-  stingers::swerve::SwerveSubsystem swerve;
   stingers::IMUSubsystem imu;
+  stingers::swerve::SwerveSubsystem swerve;
   stingers::NavigationSubsystem navigation;
   stingers::TurretSubsystem turret;
 

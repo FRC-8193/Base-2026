@@ -19,6 +19,7 @@
 */
 
 #include <stingers/subsystems/vision.hpp>
+#include <frc/Timer.h>
 #include <cassert>
 
 namespace stingers {
@@ -56,6 +57,8 @@ bool VisionPositionSensor::update() {
       variance, 0.0f,
       0.0f,     variance
   );
+
+  this->last_timestamp = frc::Timer::GetFPGATimestamp();
   return true;
 }
 

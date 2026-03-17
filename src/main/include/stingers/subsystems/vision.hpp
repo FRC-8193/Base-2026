@@ -23,6 +23,7 @@
 #include <photon/PhotonPoseEstimator.h>
 #include <photon/PhotonUtils.h>
 #include <stingers/math/kalman.hpp>
+#include <units/time.h>
 #include <vector>
 #include <string>
 
@@ -34,6 +35,14 @@ public:
 
   virtual glm::vec2 z() const override {
     return this->last_z;
+  }
+
+  float yaw() const {
+    return this->last_yaw;
+  }
+
+  units::second_t timestamp() const {
+    return this->last_timestamp;
   }
 
   virtual glm::mat4x2 H() const override {
@@ -57,6 +66,8 @@ private:
   photon::PhotonPoseEstimator pose_estimator;
 
   glm::vec2 last_z = glm::vec2(0,0);
+  float last_yaw = 0.0f;
+  units::second_t last_timestamp;
   glm::mat4x2 last_R = glm::mat2x2(std::numeric_limits<float>::max());
 };
 

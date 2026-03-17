@@ -37,7 +37,7 @@ public:
   /**
    * Creates a new navigation subsystem using the configuration defined in `cpp/stigners/config.cpp`
    */
-  NavigationSubsystem(const swerve::SwerveSubsystem &drive, IMUSubsystem &imu);
+  NavigationSubsystem(swerve::SwerveSubsystem &drive, IMUSubsystem &imu);
 
   glm::vec2 get_frame_position() const;
   glm::vec2 get_frame_velocity_fieldspace() const;
@@ -45,11 +45,14 @@ public:
 
   virtual void Periodic() override;
 private:
-  const swerve::SwerveSubsystem &drive;
+  swerve::SwerveSubsystem &drive;
   VisionSubsystem vision;
   IMUSubsystem &imu;
   KalmanFilter filter;
   frc::Field2d field;
+
+  float yaw;
+  bool has_yaw = false;
 };
 
 }
