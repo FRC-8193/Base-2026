@@ -24,6 +24,7 @@
 #include <stingers/util.hpp>
 #include <algorithm>
 #include <vector>
+#include <numbers>
 
 namespace stingers {
 

@@ -24,6 +24,7 @@
 #include <ctre/phoenix6/sim/TalonFXSimState.hpp>
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <stingers/util.hpp>
+#include <numbers>
 
 namespace stingers::swerve::motors {
 
@@ -44,7 +45,7 @@ void TalonFxDriveMotor::set_ground_speed_setpoint(units::meters_per_second_t spe
 }
 
 units::velocity::meters_per_second_t TalonFxDriveMotor::get_ground_speed_real() {
-  units::meter_t wheel_circ = this->diameter * M_PI;
+  units::meter_t wheel_circ = this->diameter * std::numbers::pi;
   // hehe hopefully no fail
   float motor_rps = this->motor.GetRotorVelocity().GetValue().to<float>();
   float wheel_rps = motor_rps * this->ratio;
@@ -81,7 +82,7 @@ void TalonFxDriveMotor::update_sim(double dt) {
   double wheel_accel = ground_accel / (0.5 * (double)this->diameter);
   double rotor_accel = wheel_accel / this->ratio;
 
-  double cur_vel = this->motor.GetRotorVelocity().GetValueAsDouble() * 2.0 * M_PI;
+  double cur_vel = this->motor.GetRotorVelocity().GetValueAsDouble() * 2.0 * std::numbers::pi;
 
   this->motor.GetSimState().SetRotorAcceleration(units::radians_per_second_squared_t(rotor_accel));
   this->motor.GetSimState().SetRotorVelocity(units::radians_per_second_t(cur_vel + rotor_accel * dt));

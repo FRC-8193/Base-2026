@@ -23,6 +23,7 @@
 #include <ctre/phoenix6/TalonFX.hpp>
 #include <units/velocity.h>
 #include <glm/glm.hpp>
+#include <numbers>
 #include <cmath>
 
 namespace stingers {
@@ -50,7 +51,7 @@ inline double est_motor_torque(ctre::phoenix6::hardware::TalonFX &motor) {
       -supply_voltage,
        supply_voltage);
 
-  double omega = motor.GetRotorVelocity().GetValueAsDouble() * 2.0 * M_PI;
+  double omega = motor.GetRotorVelocity().GetValueAsDouble() * 2.0 * std::numbers::pi;
 
   // kraken x60 motor constants (TODO: update this to be dynamic when changing to 2026 [maybe])
   static constexpr double R  = 0.033;   // ohms (approx)

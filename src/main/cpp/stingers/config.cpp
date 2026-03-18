@@ -21,6 +21,8 @@
 #include <stingers/swerve/swerve.hpp>
 #include <stingers/util.hpp>
 #include <stingers/subsystems/turret.hpp>
+#include <stingers/subsystems/imu.hpp>
+#include <stingers/subsystems/intake.hpp>
 #include <stingers/subsystems/vision.hpp>
 //#include <stingers/subsystems/imu.hpp>
 
@@ -47,6 +49,10 @@ const stingers::TurretConfig stingers::turret_config = {
   .aim_id = 15,
   .aim_to_turret_ratio = 5.625
 };
+
+const int stingers::left_intake_deploy_canid = 1;
+const int stingers::right_intake_deploy_canid = 2;
+const int stingers::intake_roller_canid = 3;
 
 const stingers::VisionConfigs stingers::vision_configs = {
   .camera_names = { "FrontFacingCamera" },
