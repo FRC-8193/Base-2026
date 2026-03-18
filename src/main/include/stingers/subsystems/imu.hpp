@@ -22,7 +22,7 @@
 #pragma once
 
 #include <frc2/command/SubsystemBase.h>
-#include <studica/Navx.h>
+//#include <studica/Navx.h>
 #include <units/angle.h>
 
 namespace stingers {
@@ -36,11 +36,11 @@ public:
   IMUSubsystem();
 
   inline units::radian_t get_yaw() {
-    return this->navx.GetYaw();
+    //return this->navx.GetYaw();
   }
 
 private:
-  studica::Navx navx;
+  //studica::Navx navx;
 };
 
 } // namespace stingers

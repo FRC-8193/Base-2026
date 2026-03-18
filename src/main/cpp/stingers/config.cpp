@@ -22,6 +22,7 @@
 #include <stingers/util.hpp>
 #include <stingers/subsystems/turret.hpp>
 #include <stingers/subsystems/imu.hpp>
+#include <stingers/subsystems/intake.hpp>
 
 static const float turn_ratio = 1.0 / 13.3714;
 static const float turn_kp = 0.2;
@@ -46,6 +47,10 @@ const stingers::TurretConfig stingers::turret_config = {
   .aim_id = 20,
   .aim_to_turret_ratio = 5.625
 };
+
+const int stingers::left_intake_deploy_canid = 1;
+const int stingers::right_intake_deploy_canid = 2;
+const int stingers::intake_roller_canid = 3;
 
 // Base swerve configuration, excluding navigational stuff
 const stingers::swerve::Configuration stingers::swerve::swerve_config = {
