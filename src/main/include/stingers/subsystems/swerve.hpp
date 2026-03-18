@@ -101,7 +101,7 @@ public:
 
   void SimulationPeriodic() override;
 private:
-  IMUSubsystem &imu;
+  NavigationSubsystem &navi;
   SwerveDrive drive;
   SwerveVelocitySensor velocity_sensor;
 };
