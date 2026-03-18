@@ -55,8 +55,8 @@ const int stingers::right_intake_deploy_canid = 2;
 const int stingers::intake_roller_canid = 3;
 
 const stingers::VisionConfigs stingers::vision_configs = {
-  .camera_names = { "FrontFacingCamera" },
-  .robot_to_camera_transforms = { {} },
+  .camera_names = { "FrontFacingCamera", "RearFacingCamera" },
+  .robot_to_camera_transforms = { {}, { {}, frc::Rotation3d(0_rad, 0_rad, 180_deg) } },
   .field_layout = frc::AprilTagFieldLayout::LoadField(frc::AprilTagField::kDefaultField)
 };
 
