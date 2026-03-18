@@ -44,7 +44,7 @@ bool VisionPositionSensor::update() {
   frc::Pose2d pose = vision_est->estimatedPose.ToPose2d();
 
   this->last_z = { pose.X().value(), pose.Y().value() };
-  this->last_yaw = pose.Rotation().Radians();
+  this->last_yaw = pose.Rotation().Radians().value();
 
   double distance = newest.GetBestTarget().GetBestCameraToTarget().Translation().Norm().value();
 

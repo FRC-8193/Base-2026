@@ -8,7 +8,7 @@
 #include <stingers/commands/follow_path.hpp>
 #include <stingers/math/linear_path.hpp>
 
-RobotContainer::RobotContainer() : swerve(imu), navigation(swerve, imu), driver(0) {
+RobotContainer::RobotContainer() : swerve(navigation), navigation(swerve, imu), driver(0) {
   ConfigureBindings();
 
   frc::SmartDashboard::PutData("swerve", &this->swerve);

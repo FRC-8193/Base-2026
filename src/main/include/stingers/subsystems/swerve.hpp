@@ -29,6 +29,10 @@
 #include <stingers/math/kalman.hpp>
 #include <stingers/subsystems/imu.hpp>
 
+namespace stingers {
+class NavigationSubsystem;
+}
+
 namespace stingers::swerve {
 
 class SwerveVelocitySensor : public KalmanSensor {
@@ -73,7 +77,7 @@ public:
   /**
    * Creates a new swerve subsystem using the configuration defined in `cpp/stingers/config.cpp`.
    */
-  SwerveSubsystem(IMUSubsystem &imu);
+  SwerveSubsystem(NavigationSubsystem &navi);
 
   /**
    * Sets the target speed and angular speed for the swerve drive.

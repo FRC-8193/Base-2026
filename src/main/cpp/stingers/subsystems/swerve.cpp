@@ -20,11 +20,12 @@
 
 #include <frc2/command/Commands.h>
 #include <stingers/subsystems/swerve.hpp>
+#include <stingers/subsystems/navigation.hpp>
 #include <stingers/util.hpp>
 
 namespace stingers::swerve {
 
-SwerveSubsystem::SwerveSubsystem(IMUSubsystem &imu) : imu(imu), drive(swerve_config), velocity_sensor(drive) {
+SwerveSubsystem::SwerveSubsystem(NavigationSubsystem &navi) : navi(navi), drive(swerve_config), velocity_sensor(drive) {
   this->SetDefaultCommand(
       this->Run([this]() { this->drive_framespace(0_mps, 0_mps, 0_rad_per_s); }));
 }
@@ -61,10 +62,10 @@ void SwerveSubsystem::InitSendable(wpi::SendableBuilder &builder) {
     builder.AddDoubleProperty(mod.name + " Velocity", [&]() { return mod.drive_motor->get_ground_speed_real().to<double>(); }, [](double){});
   }
 
-  builder.AddDoubleProperty("Robot Angle", []() { return this->navi.get_yaw(); }, [](double){});
+  builder.AddDoubleProperty("Robot Angle", [&]() { return this->navi.get_yaw(); }, [](double){});
 }
 
-void SwerveSubsystem::SivimulationPeriodic() {
+void SwerveSubsystem::SimulationPeriodic() {
   this->drive.update_sim(stingers::loop_time);
 }
 } // namespace stingers::swerve

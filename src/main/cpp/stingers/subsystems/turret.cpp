@@ -24,6 +24,7 @@
 namespace stingers {
 
 TurretSubsystem::TurretSubsystem() : aim_motor(turret_config.aim_id) {
+  this->aim_motor.SetPosition(0_rad);
 }
 
 frc2::CommandPtr TurretSubsystem::aim_command(NavigationSubsystem &navigation) {
