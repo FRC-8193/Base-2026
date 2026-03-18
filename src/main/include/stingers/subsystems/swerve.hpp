@@ -20,12 +20,14 @@
 
 #pragma once
 
+#include <cmath>
 #include <units/velocity.h>
 #include <wpi/sendable/Sendable.h>
 #include <frc2/command/SubsystemBase.h>
 #include <functional>
 #include <stingers/swerve/swerve.hpp>
 #include <stingers/math/kalman.hpp>
+#include <stingers/subsystems/imu.hpp>
 
 namespace stingers::swerve {
 
@@ -34,9 +36,12 @@ public:
   SwerveVelocitySensor(const SwerveDrive &swerve) : swerve(swerve) {}
 
   virtual glm::vec2 z() const override {
-    units::velocity::meters_per_second_t x, y;
-    this->swerve.estimate_velocity(x, y);
-    return glm::vec2((float)x, (float)y);
+    units::velocity::meters_per_second_t mx, my;
+    this->swerve.estimate_velocity(mx, my);
+    float x = (float)mx, y = (float)my;
+    float s = std::sin(-this->bot_yaw);
+    float c = std::cos(-this->bot_yaw);
+    return glm::vec2(c * x - s * y, s * x + c * y);
   }
 
   virtual glm::mat4x2 H() const override {
@@ -55,9 +60,12 @@ public:
     };
   }
 
+  void set_yaw(float yaw_radians) { this->bot_yaw = yaw_radians; }
+
   virtual ~SwerveVelocitySensor() override = default;
 private:
   const SwerveDrive &swerve;
+  float bot_yaw;
 };
 
 class SwerveSubsystem : public frc2::SubsystemBase {
@@ -65,12 +73,16 @@ public:
   /**
    * Creates a new swerve subsystem using the configuration defined in `cpp/stingers/config.cpp`.
    */
-  SwerveSubsystem();
+  SwerveSubsystem(IMUSubsystem &imu);
 
   /**
    * Sets the target speed and angular speed for the swerve drive.
    */
   void drive_framespace(units::velocity::meters_per_second_t x,
+                        units::velocity::meters_per_second_t y,
+                        units::angular_velocity::radians_per_second_t t);
+
+  void drive_fieldspace(units::velocity::meters_per_second_t x,
                         units::velocity::meters_per_second_t y,
                         units::angular_velocity::radians_per_second_t t);
 
@@ -85,10 +97,11 @@ public:
 
   virtual void InitSendable(wpi::SendableBuilder &builder) override;
 
-  inline const SwerveVelocitySensor &get_velocity_sensor() const { return this->velocity_sensor; }
+  inline SwerveVelocitySensor &get_velocity_sensor() { return this->velocity_sensor; }
 
   void SimulationPeriodic() override;
 private:
+  NavigationSubsystem &navi;
   SwerveDrive drive;
   SwerveVelocitySensor velocity_sensor;
 };

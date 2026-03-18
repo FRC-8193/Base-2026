@@ -22,8 +22,9 @@
 #pragma once
 
 #include <frc2/command/SubsystemBase.h>
-//#include <studica/Navx.h>
 #include <units/angle.h>
+#include <units/angular_velocity.h>
+#include <studica/AHRS.h>
 
 namespace stingers {
 
@@ -36,11 +37,15 @@ public:
   IMUSubsystem();
 
   inline units::radian_t get_yaw() {
-    //return this->navx.GetYaw();
+    return units::angle::degree_t(this->navx.GetYaw());
+  }
+
+  inline units::angular_velocity::radians_per_second_t get_yaw_rate() {
+    return units::angular_velocity::degrees_per_second_t(this->navx.GetRate());
   }
 
 private:
-  //studica::Navx navx;
+  studica::AHRS navx;
 };
 
 } // namespace stingers

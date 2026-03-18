@@ -23,6 +23,7 @@
 #include <frc2/command/CommandPtr.h>
 #include <glm/glm.hpp>
 #include <ctre/phoenix6/TalonFX.hpp>
+#include <stingers/subsystems/navigation.hpp>
 
 namespace stingers {
 
@@ -32,11 +33,11 @@ struct TurretConfig {
 };
 const extern TurretConfig turret_config;
 
-class TurretSubsystem {
+class TurretSubsystem : public frc2::SubsystemBase {
 public:
   TurretSubsystem();
 
-  frc2::CommandPtr hub_aim_cmd(glm::vec2 hub_position);
+  frc2::CommandPtr aim_command(NavigationSubsystem &navigation);
 
   void set_aim_angle(units::radian_t angle);
 private:

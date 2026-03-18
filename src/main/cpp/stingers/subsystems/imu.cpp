@@ -22,6 +22,6 @@
 
 namespace stingers {
 
-IMUSubsystem::IMUSubsystem() /*: navx()*/ {
+IMUSubsystem::IMUSubsystem() : navx(studica::AHRS::NavXComType::kMXP_SPI) {
 }
 }

@@ -23,34 +23,42 @@
 #include <stingers/subsystems/turret.hpp>
 #include <stingers/subsystems/imu.hpp>
 #include <stingers/subsystems/intake.hpp>
+#include <stingers/subsystems/vision.hpp>
+//#include <stingers/subsystems/imu.hpp>
 
 static const float turn_ratio = 1.0 / 13.3714;
-static const float turn_kp = 0.2;
+static const float turn_kp = 40;
 static const float turn_ki = 0.0;
 static const float turn_kd = 0.0;
 static const float turn_ks = 0.0;//0.026;
 
 static const float drive_ratio = 1.0 / 5.01;
-static const float drive_kp = 0.1;
+static const float drive_kp = 0.25;
 static const float drive_ki = 0.0;
 static const float drive_kd = 0.0;
-static const float drive_ks = 0.1;
-static const float drive_kv = 0.13;
-static const float drive_ka = 0.004;
+static const float drive_ks = 0.185;
+static const float drive_kv = 0.1;
+static const float drive_ka = 0.04;
 
 // estimate, test me!
-const units::acceleration::meters_per_second_squared_t stingers::robot_linear_accel = 1_mps_sq;
+const units::acceleration::meters_per_second_squared_t stingers::robot_linear_accel = 2_mps_sq;
 const units::velocity::meters_per_second_t stingers::robot_linear_max_vel = 5.2_mps;
 // turret kS = 0.225, kV = 0.625
 
 const stingers::TurretConfig stingers::turret_config = {
-  .aim_id = 20,
+  .aim_id = 15,
   .aim_to_turret_ratio = 5.625
 };
 
 const int stingers::left_intake_deploy_canid = 1;
 const int stingers::right_intake_deploy_canid = 2;
 const int stingers::intake_roller_canid = 3;
+
+const stingers::VisionConfigs stingers::vision_configs = {
+  .camera_names = { "FrontFacingCamera" },
+  .robot_to_camera_transforms = { {} },
+  .field_layout = frc::AprilTagFieldLayout::LoadField(frc::AprilTagField::kDefaultField)
+};
 
 // Base swerve configuration, excluding navigational stuff
 const stingers::swerve::Configuration stingers::swerve::swerve_config = {

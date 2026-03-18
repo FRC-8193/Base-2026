@@ -24,7 +24,7 @@
 
 namespace stingers::swerve {
 
-SwerveSubsystem::SwerveSubsystem() : drive(swerve_config), velocity_sensor(drive) {
+SwerveSubsystem::SwerveSubsystem(IMUSubsystem &imu) : imu(imu), drive(swerve_config), velocity_sensor(drive) {
   this->SetDefaultCommand(
       this->Run([this]() { this->drive_framespace(0_mps, 0_mps, 0_rad_per_s); }));
 }
@@ -35,12 +35,21 @@ void SwerveSubsystem::drive_framespace(units::velocity::meters_per_second_t x,
   this->drive.set_velocity_setpoint_framespace(x, y, t);
 }
 
+void SwerveSubsystem::drive_fieldspace(units::velocity::meters_per_second_t x,
+                                       units::velocity::meters_per_second_t y,
+                                       units::angular_velocity::radians_per_second_t t) {
+  float yaw = (float)this->navi.get_yaw();
+  float s = std::sin(-yaw);
+  float c = std::cos(-yaw);
+  this->drive_framespace(c * x - s * y, s * x + c * y, t);
+}
+
 frc2::CommandPtr SwerveSubsystem::drive_command(
     std::function<units::velocity::meters_per_second_t()> speed_x,
     std::function<units::velocity::meters_per_second_t()> speed_y,
     std::function<units::angular_velocity::radians_per_second_t()> speed_r) {
   return this->Run([speed_x, speed_y, speed_r, this] {
-    this->drive.set_velocity_setpoint_framespace(speed_x(), speed_y(), speed_r());
+    this->drive_fieldspace(speed_x(), speed_y(), speed_r());
   });
 }
 
@@ -52,11 +61,10 @@ void SwerveSubsystem::InitSendable(wpi::SendableBuilder &builder) {
     builder.AddDoubleProperty(mod.name + " Velocity", [&]() { return mod.drive_motor->get_ground_speed_real().to<double>(); }, [](double){});
   }
 
-  // we don't have this data but it should be displayed in the field widget anyway
-  builder.AddDoubleProperty("Robot Angle", []() { return 0.0; }, [](double){});
+  builder.AddDoubleProperty("Robot Angle", []() { return this->navi.get_yaw(); }, [](double){});
 }
 
-void SwerveSubsystem::SimulationPeriodic() {
+void SwerveSubsystem::SivimulationPeriodic() {
   this->drive.update_sim(stingers::loop_time);
 }
 } // namespace stingers::swerve

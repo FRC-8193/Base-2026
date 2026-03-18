@@ -8,7 +8,7 @@
 #include <stingers/commands/follow_path.hpp>
 #include <stingers/math/linear_path.hpp>
 
-RobotContainer::RobotContainer() : navigation(swerve), driver(0) {
+RobotContainer::RobotContainer() : swerve(imu), navigation(swerve, imu), driver(0) {
   ConfigureBindings();
 
   frc::SmartDashboard::PutData("swerve", &this->swerve);
@@ -16,14 +16,16 @@ RobotContainer::RobotContainer() : navigation(swerve), driver(0) {
 
 void RobotContainer::ConfigureBindings() {
   this->swerve.SetDefaultCommand(this->swerve.drive_command(
-      [this] { return units::meters_per_second_t(this->driver.GetRawAxis(0))*2.0; },
-      [this] { return units::meters_per_second_t(this->driver.GetRawAxis(1))*2.0; },
+      [this] { return units::meters_per_second_t(-this->driver.GetRawAxis(0))*2.0; },
+      [this] { return units::meters_per_second_t(-this->driver.GetRawAxis(1))*2.0; },
       [this] { return units::radians_per_second_t(this->driver.GetRawAxis(2)); }));
+
+  this->turret.SetDefaultCommand(this->turret.aim_command(this->navigation));
 }
 
 frc2::CommandPtr RobotContainer::GetAutonomousCommand() {
   stingers::FollowPathConfig config = {
-    .aggressiveness = 1.0,
+    .aggressiveness = 0.25,
     .stop_at_end = true
   };
   return frc2::cmd::RepeatingSequence(

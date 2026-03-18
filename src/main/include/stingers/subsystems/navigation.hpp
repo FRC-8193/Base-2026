@@ -22,7 +22,9 @@
 
 #include <frc2/command/SubsystemBase.h>
 #include <stingers/subsystems/swerve.hpp>
+#include <stingers/subsystems/vision.hpp>
 #include <stingers/math/kalman.hpp>
+#include <stingers/subsystems/imu.hpp>
 #include <frc/smartdashboard/Field2d.h>
 
 namespace stingers {
@@ -35,17 +37,23 @@ public:
   /**
    * Creates a new navigation subsystem using the configuration defined in `cpp/stigners/config.cpp`
    */
-  NavigationSubsystem(const swerve::SwerveSubsystem &drive);
+  NavigationSubsystem(swerve::SwerveSubsystem &drive, IMUSubsystem &imu);
 
   glm::vec2 get_frame_position() const;
   glm::vec2 get_frame_velocity_fieldspace() const;
+  float get_yaw() const { return this->yaw; } // radians
   inline frc::Field2d &get_field() { return this->field; }
 
   virtual void Periodic() override;
 private:
-  const swerve::SwerveSubsystem &drive;
+  swerve::SwerveSubsystem &drive;
+  VisionSubsystem vision;
+  IMUSubsystem &imu;
   KalmanFilter filter;
   frc::Field2d field;
+
+  float yaw;
+  bool has_yaw = false;
 };
 
 }

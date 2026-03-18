@@ -203,7 +203,7 @@ void FollowPath::Execute() {
   //float angular_velocity_setpoint = this->angle_pid.update(angle_setpoint, angle, dt);
 
     // TODO: convert to fieldspace
-  this->swerve.drive_framespace(units::meters_per_second_t(velocity_setpoint.y), units::meters_per_second_t(velocity_setpoint.x), units::radians_per_second_t(0.0));
+  this->swerve.drive_fieldspace(units::meters_per_second_t(velocity_setpoint.y), units::meters_per_second_t(velocity_setpoint.x), units::radians_per_second_t(0.0));
   //this->robot.set_angular_velocity_setpoint(angular_velocity_setpoint);
 }
 

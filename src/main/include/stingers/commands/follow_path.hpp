@@ -37,7 +37,7 @@ struct FollowPathConfig {
 
 class FollowPath : public frc2::CommandHelper<frc2::Command, FollowPath> {
 public:
-  FollowPath(swerve::SwerveSubsystem &swerve, NavigationSubsystem &navi, std::unique_ptr<math::Path> path, const FollowPathConfig &config) : swerve(swerve), navi(navi), path(std::move(path)), position_pid(25.0, 0.0, 0.5) {
+  FollowPath(swerve::SwerveSubsystem &swerve, NavigationSubsystem &navi, std::unique_ptr<math::Path> path, const FollowPathConfig &config) : swerve(swerve), navi(navi), path(std::move(path)), position_pid(10.0, 0.0, 0.0) {
     this->AddRequirements(&this->swerve);
     this->aggressiveness = config.aggressiveness;
     this->stop_at_end = config.stop_at_end;
