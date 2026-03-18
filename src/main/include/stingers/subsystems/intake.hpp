@@ -22,7 +22,7 @@ public:
   void set_roller(bool on);
 
 
-  static constexpr units::turn_t deploy_position = 10_tr;
+  static constexpr units::turn_t deploy_position = 7.3_tr;
   static constexpr units::turn_t retract_position = 0_tr;
 
   ctre::phoenix6::hardware::TalonFX left_intake_deploy_motor;
