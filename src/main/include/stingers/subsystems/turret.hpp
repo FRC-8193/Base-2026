@@ -24,6 +24,7 @@
 #include <glm/glm.hpp>
 #include <ctre/phoenix6/TalonFX.hpp>
 #include <stingers/subsystems/navigation.hpp>
+#include <functional>
 
 namespace stingers {
 
@@ -37,7 +38,8 @@ class TurretSubsystem : public frc2::SubsystemBase {
 public:
   TurretSubsystem();
 
-  frc2::CommandPtr aim_command(NavigationSubsystem &navigation);
+  frc2::CommandPtr aim_at_command(NavigationSubsystem &navigation, std::function<glm::vec2()> aim_pos);
+  frc2::CommandPtr aim_command(NavigationSubsystem &navigation, std::function<units::angle::radian_t()> aim_angle);
 
   void set_aim_angle(units::radian_t angle);
 private:

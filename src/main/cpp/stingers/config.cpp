@@ -50,9 +50,9 @@ const stingers::TurretConfig stingers::turret_config = {
   .aim_to_turret_ratio = 5.625
 };
 
-const int stingers::left_intake_deploy_canid = 1;
-const int stingers::right_intake_deploy_canid = 2;
-const int stingers::intake_roller_canid = 3;
+const int stingers::left_intake_deploy_canid = 17;
+const int stingers::right_intake_deploy_canid = 18;
+const int stingers::intake_roller_canid = 19;
 
 const stingers::VisionConfigs stingers::vision_configs = {
   .camera_names = { "FrontFacingCamera", "RearFacingCamera" },

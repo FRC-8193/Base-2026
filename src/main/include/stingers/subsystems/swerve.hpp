@@ -43,9 +43,9 @@ public:
     units::velocity::meters_per_second_t mx, my;
     this->swerve.estimate_velocity(mx, my);
     float x = (float)mx, y = (float)my;
-    float s = std::sin(-this->bot_yaw);
-    float c = std::cos(-this->bot_yaw);
-    return glm::vec2(c * x - s * y, s * x + c * y);
+    float s = std::sin(this->bot_yaw);
+    float c = std::cos(this->bot_yaw);
+    return -glm::vec2(c * x - s * y, s * x + c * y);
   }
 
   virtual glm::mat4x2 H() const override {

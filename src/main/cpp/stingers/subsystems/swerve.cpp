@@ -40,8 +40,8 @@ void SwerveSubsystem::drive_fieldspace(units::velocity::meters_per_second_t x,
                                        units::velocity::meters_per_second_t y,
                                        units::angular_velocity::radians_per_second_t t) {
   float yaw = (float)this->navi.get_yaw();
-  float s = std::sin(-yaw);
-  float c = std::cos(-yaw);
+  float s = std::sin(yaw);
+  float c = std::cos(yaw);
   this->drive_framespace(c * x - s * y, s * x + c * y, t);
 }
 

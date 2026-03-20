@@ -42,14 +42,14 @@ void NavigationSubsystem::Periodic() {
   this->drive.get_velocity_sensor().set_yaw(this->yaw);
   sensors.push_back(this->drive.get_velocity_sensor());
 
-  this->yaw += loop_time * (float)this->imu.get_yaw_rate();
+  this->yaw -= loop_time * (float)this->imu.get_yaw_rate();
 
   for (const auto &sensor : this->vision.get_sensors()) {
     // use vision sensors for yaw update
     float sensor_yaw = sensor.get().yaw();
     units::second_t age = frc::Timer::GetFPGATimestamp() - sensor.get().timestamp();
 
-    float alpha = std::min(0.5f, 0.005f / (float)age);
+    float alpha = std::min(0.5f, 0.002f / (float)age);
     float error = angle_diff(sensor_yaw, this->yaw);
 
     if (!this->has_yaw) {
@@ -57,7 +57,7 @@ void NavigationSubsystem::Periodic() {
       this->has_yaw = true;
     }
 
-    this->yaw += error * alpha;
+    this->yaw += error * alpha * loop_time;
 
     sensors.push_back(sensor);
   }

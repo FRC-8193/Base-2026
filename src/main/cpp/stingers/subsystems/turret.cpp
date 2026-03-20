@@ -24,17 +24,28 @@
 namespace stingers {
 
 TurretSubsystem::TurretSubsystem() : aim_motor(turret_config.aim_id) {
-  this->aim_motor.SetPosition(0_rad);
 }
 
-frc2::CommandPtr TurretSubsystem::aim_command(NavigationSubsystem &navigation) {
-  return this->Run([&navigation, this] {
-    this->set_aim_angle(units::angle::radian_t(fmodf(navigation.get_yaw(), 2.0 * M_PI)));
+
+frc2::CommandPtr TurretSubsystem::aim_at_command(NavigationSubsystem &navigation, std::function<glm::vec2()> aim_position) {
+  return this->aim_command(navigation, [this, &navigation, aim_position] {
+    glm::vec2 pos = navigation.get_frame_position();
+    glm::vec2 targ = aim_position();
+
+    glm::vec2 delta = targ - pos;
+
+    navigation.get_field().GetObject("aim_location")->SetPose(frc::Pose2d{units::meter_t{targ.x}, units::meter_t{targ.y}, frc::Rotation2d{units::radian_t(glm::atan(delta.y, delta.x))}});
+    return units::radian_t(glm::atan(delta.y, delta.x));
   });
 }
 
+frc2::CommandPtr TurretSubsystem::aim_command(NavigationSubsystem &navigation, std::function<units::angle::radian_t()> angle) {
+  return this->Run([this, &navigation, angle] {
+    this->set_aim_angle(units::angle::radian_t((float)angle() - navigation.get_yaw()));
+  });
+}
 void TurretSubsystem::set_aim_angle(units::radian_t angle) {
-  auto ctr = ctre::phoenix6::controls::MotionMagicVoltage(angle).WithSlot(0);
+  auto ctr = ctre::phoenix6::controls::MotionMagicVoltage(units::radian_t(fmodf((float)angle, 2.0 * M_PI))).WithSlot(0);
   this->aim_motor.SetControl(ctr);
 }
 }
