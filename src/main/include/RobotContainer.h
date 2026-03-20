@@ -11,6 +11,8 @@
 #include <stingers/subsystems/imu.hpp>
 #include <stingers/subsystems/turret.hpp>
 #include <stingers/subsystems/intake.hpp>
+#include <stingers/subsystems/indexer.hpp>
+#include <stingers/subsystems/accelerator.hpp>
 
 class RobotContainer {
 public:
@@ -26,6 +28,8 @@ private:
   stingers::NavigationSubsystem navigation;
   stingers::TurretSubsystem turret;
   stingers::IntakeSubsystem intake;
+  stingers::IndexerSubsystem indexer;
+  stingers::AcceleratorSubsystem accelerator;
 
   frc2::CommandJoystick driver;
 };

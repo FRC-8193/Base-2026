@@ -21,7 +21,7 @@ public:
   void deploy(bool deploy);
   void set_roller(bool on);
 
-
+private:
   static constexpr units::turn_t deploy_position = 7.3_tr;
   static constexpr units::turn_t retract_position = 0_tr;
 

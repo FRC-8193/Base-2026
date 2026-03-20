@@ -44,6 +44,14 @@ void RobotContainer::ConfigureBindings() {
     .OnTrue(frc2::CommandPtr(this->turret.aim_at_command(this->navigation, [hub_position] { return hub_position; })));
   this->driver.Button(10)
     .OnTrue(frc2::CommandPtr(this->turret.aim_command(this->navigation, [driver_forward] { return units::radian_t(M_PI + driver_forward); })));
+
+  this->driver.Button(1)
+    .OnTrue(this->indexer.run_command(1.0))
+    .OnFalse(this->indexer.run_command(0.0));
+
+  this->driver.Button(3)
+    .OnTrue(this->accelerator.run_command(1.0))
+    .OnFalse(this->accelerator.run_command(0.0));
 }
 
 frc2::CommandPtr RobotContainer::GetAutonomousCommand() {

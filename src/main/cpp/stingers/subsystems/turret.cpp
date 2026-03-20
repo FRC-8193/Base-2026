@@ -23,7 +23,7 @@
 
 namespace stingers {
 
-TurretSubsystem::TurretSubsystem() : aim_motor(turret_config.aim_id) {
+TurretSubsystem::TurretSubsystem() : aim_motor(turret_config.aim_id), hood_motor(turret_config.hood_id, rev::spark::SparkLowLevel::MotorType::kBrushless) {
 }
 
 

@@ -1,5 +1,5 @@
 /**
-*   Turret subsystem declarations for FRC #8193's FRC 2026 season chassis.
+*   Accelerator subsystem declarations for FRC #8193's FRC 2026 season chassis.
 *
 *   Copyright (C) 2026 Frederick Ziola, et al. (New Lothrop Robotics)
 *   This program is free software: you can redistribute it and/or modify
@@ -18,35 +18,27 @@
 *   Contact us: robotics@newlothrop.k12.mi.us
 */
 
-#pragma once
-
+#include <ctre/phoenix/motorcontrol/can/TalonSRX.h>
+#include <frc2/command/SubsystemBase.h>
 #include <frc2/command/CommandPtr.h>
-#include <glm/glm.hpp>
-#include <ctre/phoenix6/TalonFX.hpp>
-#include <rev/SparkMax.h>
-#include <stingers/subsystems/navigation.hpp>
 #include <functional>
+#include <rev/SparkFlex.h>
 
 namespace stingers {
 
-struct TurretConfig {
-  int aim_id;
-  float aim_to_turret_ratio;
-  int hood_id;
-};
-const extern TurretConfig turret_config;
+const extern int pre_accelerator_canid;
+const extern int accelerator_canid;
 
-class TurretSubsystem : public frc2::SubsystemBase {
+class AcceleratorSubsystem : public frc2::Subsystem {
 public:
-  TurretSubsystem();
+  AcceleratorSubsystem();
 
-  frc2::CommandPtr aim_at_command(NavigationSubsystem &navigation, std::function<glm::vec2()> aim_pos);
-  frc2::CommandPtr aim_command(NavigationSubsystem &navigation, std::function<units::angle::radian_t()> aim_angle);
+  frc2::CommandPtr run_command(float speed);
+  frc2::CommandPtr run_command(std::function<float()> speed);
+  void set_speed(float speed);
 
-  void set_aim_angle(units::radian_t angle);
-  void set_hood_angle(units::radian_t angle);
 private:
-  ctre::phoenix6::hardware::TalonFX aim_motor;
-  rev::spark::SparkMax hood_motor;
+  rev::spark::SparkFlex pre_accelerator, accelerator;
 };
+
 }

@@ -24,6 +24,8 @@
 #include <stingers/subsystems/imu.hpp>
 #include <stingers/subsystems/intake.hpp>
 #include <stingers/subsystems/vision.hpp>
+#include <stingers/subsystems/indexer.hpp>
+#include <stingers/subsystems/accelerator.hpp>
 //#include <stingers/subsystems/imu.hpp>
 
 static const float turn_ratio = 1.0 / 13.3714;
@@ -47,12 +49,18 @@ const units::velocity::meters_per_second_t stingers::robot_linear_max_vel = 5.2_
 
 const stingers::TurretConfig stingers::turret_config = {
   .aim_id = 15,
-  .aim_to_turret_ratio = 5.625
+  .aim_to_turret_ratio = 5.625,
+  .hood_id = 22,
 };
 
 const int stingers::left_intake_deploy_canid = 17;
 const int stingers::right_intake_deploy_canid = 18;
 const int stingers::intake_roller_canid = 19;
+
+const int stingers::indexer_canid = 16;
+
+const int stingers::pre_accelerator_canid = 21;
+const int stingers::accelerator_canid = 20;
 
 const stingers::VisionConfigs stingers::vision_configs = {
   .camera_names = { "FrontFacingCamera", "RearFacingCamera" },
