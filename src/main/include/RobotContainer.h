@@ -13,10 +13,15 @@
 #include <stingers/subsystems/intake.hpp>
 #include <stingers/subsystems/indexer.hpp>
 #include <stingers/subsystems/accelerator.hpp>
+#include <frc/DriverStation.h>
 
 class RobotContainer {
 public:
   RobotContainer();
+
+  inline bool is_blue() const { return frc::DriverStation::GetAlliance() == frc::DriverStation::Alliance::kBlue; }
+  inline float driver_forward_radians() const { return this->is_blue() ? 0.0f : M_PI; }
+  inline glm::vec2 hub_position() const { return glm::vec2(this->is_blue() ? 4.62 : 11.91, 4.0f); }
 
   frc2::CommandPtr GetAutonomousCommand();
 

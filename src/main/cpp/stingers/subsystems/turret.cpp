@@ -48,4 +48,8 @@ void TurretSubsystem::set_aim_angle(units::radian_t angle) {
   auto ctr = ctre::phoenix6::controls::MotionMagicVoltage(units::radian_t(fmodf((float)angle, 2.0 * M_PI))).WithSlot(0);
   this->aim_motor.SetControl(ctr);
 }
+
+void TurretSubsystem::set_hood_angle(float angle) {
+  this->hood_motor.GetClosedLoopController().SetSetpoint(angle*4.5, rev::spark::SparkLowLevel::ControlType::kPosition);
+}
 }

@@ -44,7 +44,7 @@ public:
   frc2::CommandPtr aim_command(NavigationSubsystem &navigation, std::function<units::angle::radian_t()> aim_angle);
 
   void set_aim_angle(units::radian_t angle);
-  void set_hood_angle(units::radian_t angle);
+  void set_hood_angle(float angle);
 private:
   ctre::phoenix6::hardware::TalonFX aim_motor;
   rev::spark::SparkMax hood_motor;
