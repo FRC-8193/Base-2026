@@ -44,7 +44,8 @@ public:
     fb_cfg.FeedbackSensorSource = ctre::phoenix6::signals::FeedbackSensorSourceValue::RotorSensor;
 
     ctre::phoenix6::configs::CurrentLimitsConfigs curr_cfg;
-    curr_cfg.SupplyCurrentLimit = 60_A;
+    curr_cfg.SupplyCurrentLimit = 50_A;
+    curr_cfg.StatorCurrentLimit = 100_A;
 
     this->motor.GetConfigurator().Apply(fb_cfg);
     this->motor.GetConfigurator().Apply(pid_cfg);

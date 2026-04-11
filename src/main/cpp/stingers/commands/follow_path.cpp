@@ -196,7 +196,8 @@ void FollowPath::Execute() {
   float ff = 1.0; // velocity feedforward
   // get back to the path if we're too far away
   if (glm::length(position_setpoint - this->navi.get_frame_position()) > 0.2) ff = 0.0f;
-  glm::vec2 velocity_setpoint = this->position_pid.update(position_setpoint, pos, dt) + ff * gradient * fminf(vtarg, (float)robot_linear_max_vel * this->aggressiveness);
+  glm::vec2 pid = this->position_pid.update(position_setpoint, pos, dt);
+  glm::vec2 velocity_setpoint = pid * (fminf((float)robot_linear_max_vel, glm::length(pid)) / glm::length(pid)) + ff * gradient * fminf(vtarg, (float)robot_linear_max_vel * this->aggressiveness);
 
   frc::SmartDashboard::PutNumber("path follow t", t);
   frc::SmartDashboard::PutNumber("path follow vx", velocity_setpoint.x);

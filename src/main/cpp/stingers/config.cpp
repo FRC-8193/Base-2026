@@ -53,8 +53,7 @@ const stingers::TurretConfig stingers::turret_config = {
   .hood_id = 22,
 };
 
-const int stingers::left_intake_deploy_canid = 17;
-const int stingers::right_intake_deploy_canid = 18;
+const int stingers::intake_deploy_canid = 17;
 const int stingers::intake_roller_canid = 19;
 
 const int stingers::indexer_canid = 16;

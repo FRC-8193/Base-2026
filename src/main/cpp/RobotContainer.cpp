@@ -25,14 +25,14 @@ void RobotContainer::ConfigureBindings() {
 
   stingers::DeployIntakeCommand(&this->intake, false).Schedule();
 
-  //this->driver.Button(7)
-  //  .OnTrue(frc2::CommandPtr(stingers::DeployIntakeCommand(&this->intake, true)));
-  //this->driver.Button(8)
-  //  .OnFalse(frc2::CommandPtr(stingers::DeployIntakeCommand(&this->intake, false)));
+  this->driver.Button(7)
+    .OnTrue(frc2::CommandPtr(stingers::DeployIntakeCommand(&this->intake, true)));
+  this->driver.Button(8)
+    .OnFalse(frc2::CommandPtr(stingers::DeployIntakeCommand(&this->intake, false)));
 
-  //this->driver.Button(2)
-  //  .OnTrue(frc2::CommandPtr(stingers::ToggleRollerCommand(&this->intake, true)))
-  //  .OnFalse(frc2::CommandPtr(stingers::ToggleRollerCommand(&this->intake, false)));
+  this->driver.Button(2)
+    .OnTrue(frc2::CommandPtr(stingers::ToggleRollerCommand(&this->intake, true)))
+    .OnFalse(frc2::CommandPtr(stingers::ToggleRollerCommand(&this->intake, false)));
 
   this->driver.Button(9)
     .OnTrue(frc2::CommandPtr(this->turret.aim_at_command(this->navigation, [this] { return this->hub_position(); })));
@@ -59,17 +59,19 @@ void RobotContainer::ConfigureBindings() {
 }
 
 frc2::CommandPtr RobotContainer::GetAutonomousCommand() {
-  /*stingers::FollowPathConfig config = {
-    .aggressiveness = 0.25,
+
+  auto y = this->navigation.get_frame_position().y;
+
+  stingers::FollowPathConfig config = {
+    .aggressiveness = 0.4,
     .stop_at_end = true
   };
   return frc2::cmd::RepeatingSequence(
-    stingers::FollowPath(this->swerve, this->navigation, std::make_unique<stingers::math::LinearPath>(glm::vec2(0.0, 0.0), glm::vec2(4.0, 0.0)), config).ToPtr(),
-    stingers::FollowPath(this->swerve, this->navigation, std::make_unique<stingers::math::LinearPath>(glm::vec2(4.0, 0.0), glm::vec2(4.0, 4.0)), config).ToPtr(),
-    stingers::FollowPath(this->swerve, this->navigation, std::make_unique<stingers::math::LinearPath>(glm::vec2(4.0, 4.0), glm::vec2(0.0, 4.0)), config).ToPtr(),
-    stingers::FollowPath(this->swerve, this->navigation, std::make_unique<stingers::math::LinearPath>(glm::vec2(0.0, 4.0), glm::vec2(0.0, 0.0)), config).ToPtr()
-  );*/
+    stingers::FollowPath(this->swerve, this->navigation, std::make_unique<stingers::math::LinearPath>(glm::vec2(8.27, y), glm::vec2(8.27, 8-y)), config).ToPtr(),
+    stingers::FollowPath(this->swerve, this->navigation, std::make_unique<stingers::math::LinearPath>(glm::vec2(8.27, 8-y), glm::vec2(8.27, y)), config).ToPtr()
+  );
 
+  /*
   return frc2::cmd::Sequence(frc2::cmd::Parallel(
     this->swerve.drive_command([] { return 0_mps; }, [] { return 0_mps; }, [] { return units::radians_per_second_t(0); }),
     this->turret.aim_at_command(this->navigation, [this] { return this->hub_position(); }),
@@ -82,5 +84,5 @@ frc2::CommandPtr RobotContainer::GetAutonomousCommand() {
   frc2::cmd::Parallel(
   this->accelerator.run_command(0.0),
   this->indexer.run_command(0.0)
-  ));
+  ));*/
 }
